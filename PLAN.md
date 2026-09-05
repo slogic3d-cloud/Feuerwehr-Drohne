@@ -32,6 +32,35 @@ wird. Geht dort etwas schief, kannst du den Rest der Teile noch zurückgeben.
 
 **Zeit:** so lange du brauchst · **Kosten:** 0 €
 
+## A0 — Die wichtigste Frage vorab beantworten — mit der Kamera der Wehr
+
+**Kosten: 0 €. Das ist der Versuch, der über das ganze Projekt entscheidet.**
+
+Die Wehr hat eine Wärmebildkamera. Damit lässt sich schon heute klären, ob sich
+nachts ein liegender Mensch auf *unseren* Flächen überhaupt deutlich genug vom
+Boden abhebt. Wenn nicht, hilft auch die beste Software nichts — und niemand
+hat Geld ausgegeben.
+
+- [ ] [messprotokoll.html](messprotokoll.html) im Browser öffnen und Blatt 1
+      ausdrucken (die Datei braucht kein Python, nur einen Browser)
+- [ ] Nach Einbruch der Dunkelheit raus, mindestens zwei Stunden nach
+      Sonnenuntergang, am besten bei klarem Himmel
+- [ ] Erhöhten Standpunkt suchen: Drehleiter, Hochsitz, Böschung, Feldscheune
+- [ ] Helfer legt sich flach hin und bleibt ruhig liegen
+- [ ] Messen und eintragen: Temperatur der Person, Temperatur des Bodens
+      daneben, **Differenz** — und das über wachsende Abstände
+- [ ] Auch Störer notieren: Was sah aus wie ein Mensch, war aber keiner?
+
+**Die Zahl, auf die es ankommt, ist die Differenz.** Unter 2 K wird es für die
+Automatik schwierig, ab 4 K ist es gut, ab 6 K sehr gut.
+
+**Fertig, wenn:** Du weißt, mit wie viel Kelvin Unterschied du auf euren Wiesen
+rechnen kannst — und ob es überhaupt genug ist.
+
+Wenn möglich, den Versuch zweimal machen: einmal bei klarem Himmel und einmal
+bei Bewölkung. Der Unterschied ist groß und sagt dir, wann ein Einsatz Sinn
+hat und wann nicht.
+
 ## A1 — Software zum Laufen bringen
 
 - [ ] Python 3 installieren, falls noch nicht vorhanden
@@ -210,12 +239,17 @@ finde ich nachts 9 von 10 Personen, mit im Schnitt 2 Fehlalarmen je Flug."
 
 ## Womit du **jetzt** anfängst
 
-1. **Python installieren und die Simulation starten** — `cd sensor`, dann
-   `python3 suchkopf.py` (Windows: `py suchkopf.py`), Browser auf
-   `localhost:8080`
+1. **Den Nachtversuch mit der Wärmebildkamera der Wehr machen** (A0) —
+   kostet nichts, braucht keine Software und beantwortet die Frage, an der
+   alles hängt. [messprotokoll.html](messprotokoll.html) ausdrucken und los.
 2. **Kompetenznachweis A1/A3 online machen** — kostenlos, ein Nachmittag,
    und er gilt fünf Jahre
 3. **Simulator einrichten und schweben üben** — jede Stunde dort spart später
    Propeller
+4. **Halter in CAD konstruieren** — Maße aus den Datenblättern, zweiteilig
+   bauen (Grundplatte plus wechselbare Kameraschale), dann blockiert eine
+   unsichere Kameraabmessung nichts
+5. Wenn du magst: Python installieren und die Simulation starten (A1) —
+   `cd sensor`, dann `python3 suchkopf.py`, unter Windows `py suchkopf.py`
 
 Das kostet zusammen keinen Cent und bringt dich bis an die Bestellung heran.

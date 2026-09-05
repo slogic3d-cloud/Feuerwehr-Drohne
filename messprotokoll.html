@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Messprotokoll Personensuche</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font: 11pt/1.4 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: #000; background: #fff; margin: 0; padding: 14px;
+    max-width: 200mm; margin-inline: auto;
+  }
+  h1 { font-size: 15pt; margin: 0 0 2px; }
+  h2 {
+    font-size: 11.5pt; margin: 18px 0 7px; padding-bottom: 3px;
+    border-bottom: 1.5px solid #000; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .unter { font-size: 9pt; color: #444; margin-bottom: 4px; }
+
+  .anleitung {
+    border: 1.5px solid #000; padding: 9px 11px; font-size: 9.5pt; line-height: 1.5;
+    margin: 12px 0 4px; background: #f4f4f4;
+  }
+  /* Nur die Zwischenueberschriften umbrechen, nicht jedes fette Wort im Text. */
+  .anleitung > b { display: block; margin-bottom: 3px; font-size: 10pt; }
+  .anleitung ol { margin: 4px 0 0; padding-left: 18px; }
+  .anleitung li { margin-bottom: 2px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+  th, td { border: 1px solid #000; padding: 4px 5px; text-align: left; vertical-align: top; }
+  th { background: #e8e8e8; font-size: 8.5pt; text-transform: uppercase; letter-spacing: .03em; }
+  td { height: 26px; }
+  .schmal { width: 34px; text-align: center; }
+  .mittel { width: 62px; }
+  td.zentriert { text-align: center; }
+
+  .kopfdaten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px 14px; margin-bottom: 4px; }
+  .feld { font-size: 9.5pt; }
+  .feld span { display: block; font-size: 8pt; text-transform: uppercase; letter-spacing: .04em; color: #444; }
+  .feld .linie { border-bottom: 1px solid #000; height: 19px; }
+
+  .kaesten { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 9.5pt; margin-top: 3px; }
+  .kasten::before {
+    content: ""; display: inline-block; width: 11px; height: 11px;
+    border: 1.3px solid #000; margin-right: 5px; vertical-align: -1px;
+  }
+  .hinweis { font-size: 8.5pt; color: #333; margin-top: 5px; line-height: 1.45; }
+  .fazit { border: 1.5px solid #000; padding: 10px 11px; margin-top: 10px; }
+  .fazit .linie { border-bottom: 1px solid #000; height: 20px; margin-top: 7px; }
+  .seitenumbruch { page-break-before: always; }
+  .drucken { text-align: right; margin-bottom: 8px; }
+  .drucken button {
+    font: inherit; padding: 7px 14px; border: 1.5px solid #000; background: #fff;
+    border-radius: 6px; cursor: pointer; font-weight: 600;
+  }
+  @media print { .drucken { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+
+<div class="drucken"><button onclick="window.print()">Drucken</button></div>
+
+<h1>Messprotokoll — Personensuche im Wärmebild</h1>
+<div class="unter">Freiwillige Feuerwehr Ebersdorf bei Coburg · Blatt 1: Vorversuch mit der Wärmebildkamera der Wehr</div>
+
+<div class="anleitung">
+  <b>Worum es geht</b>
+  Bevor Geld ausgegeben wird: Hebt sich nachts ein liegender Mensch auf unseren
+  Flächen überhaupt deutlich genug vom Boden ab? Diese Frage entscheidet über das
+  ganze Projekt und lässt sich mit der vorhandenen Wärmebildkamera beantworten.
+  <ol>
+    <li>Nach Einbruch der Dunkelheit auf eine freie Fläche, mindestens zwei Stunden nach Sonnenuntergang.</li>
+    <li>Erhöhten Standpunkt suchen: Drehleiter, Hochsitz, Böschung, Feldscheune — je höher, desto aussagekräftiger.</li>
+    <li>Helfer legt sich flach auf den Boden, <b>ruhig liegen bleiben</b>, normale Kleidung, keine Decke.</li>
+    <li>Kamera daraufhalten. Notieren: Temperatur der Person, Temperatur des Bodens daneben, Differenz.</li>
+    <li>Abstand vergrößern und wiederholen. Auch Beobachtungen ohne Zahlenwert eintragen.</li>
+  </ol>
+  <b style="margin-top:7px">Die entscheidende Zahl ist die Differenz.</b>
+  Unter 2 K wird es für die Automatik schwierig, ab 4 K ist es gut, ab 6 K sehr gut.
+</div>
+
+<h2>Bedingungen</h2>
+<div class="kopfdaten">
+  <div class="feld"><span>Datum</span><div class="linie"></div></div>
+  <div class="feld"><span>Uhrzeit von – bis</span><div class="linie"></div></div>
+  <div class="feld"><span>Sonnenuntergang war um</span><div class="linie"></div></div>
+  <div class="feld"><span>Ort / Flur</span><div class="linie"></div></div>
+  <div class="feld"><span>Lufttemperatur °C</span><div class="linie"></div></div>
+  <div class="feld"><span>Bodentemperatur °C</span><div class="linie"></div></div>
+  <div class="feld"><span>Wind</span><div class="linie"></div></div>
+  <div class="feld"><span>Kameratyp</span><div class="linie"></div></div>
+  <div class="feld"><span>Aufgenommen von</span><div class="linie"></div></div>
+</div>
+<div class="kaesten" style="margin-top:7px">
+  <span class="kasten">klarer Himmel</span>
+  <span class="kasten">bewölkt</span>
+  <span class="kasten">Nebel</span>
+  <span class="kasten">Regen</span>
+  <span class="kasten">trocken</span>
+  <span class="kasten">Tau / feucht</span>
+  <span class="kasten">Raureif</span>
+</div>
+<div class="kaesten" style="margin-top:6px">
+  <span class="kasten">abgemähte Wiese</span>
+  <span class="kasten">hohes Gras</span>
+  <span class="kasten">Stoppelfeld</span>
+  <span class="kasten">Acker</span>
+  <span class="kasten">Waldrand</span>
+  <span class="kasten">unter Bäumen</span>
+</div>
+<div class="hinweis">
+  Klarer Himmel kühlt den Boden stark aus — dann ist der Unterschied am größten.
+  Bewölkung hält die Wärme am Boden und macht die Suche schwerer. Beides notieren.
+</div>
+
+<h2>Messungen</h2>
+<table>
+  <thead>
+    <tr>
+      <th class="schmal">Nr</th>
+      <th class="mittel">Abstand m</th>
+      <th class="mittel">Höhe m</th>
+      <th>Ziel</th>
+      <th class="mittel">Person °C</th>
+      <th class="mittel">Boden °C</th>
+      <th class="mittel">Diff. K</th>
+      <th class="mittel">erkannt?</th>
+      <th>Bemerkung</th>
+    </tr>
+  </thead>
+  <tbody id="zeilen"></tbody>
+</table>
+<div class="hinweis">
+  <b>Ziel:</b> liegend / sitzend / stehend / Kopf frei / Kapuze auf / Reh oder anderes Tier /
+  Kontrollobjekt (Stein, Weg, Auto). Auch Fehlanzeigen sind Ergebnisse — gerade die.
+</div>
+
+<div class="fazit">
+  <b style="font-size:10pt">Bis zu welchem Abstand war die Person eindeutig zu erkennen?</b>
+  <div class="linie"></div>
+  <b style="font-size:10pt; display:block; margin-top:9px">Was hat gestört? Was sah aus wie ein Mensch, war aber keiner?</b>
+  <div class="linie"></div>
+  <div class="linie"></div>
+</div>
+
+<div class="seitenumbruch"></div>
+
+<h1>Messprotokoll — Flugversuche</h1>
+<div class="unter">Blatt 2: Trefferquote der fertigen Drohne (Phase D des Arbeitsplans)</div>
+
+<div class="anleitung">
+  <b>Aufbau</b>
+  <ol>
+    <li>Der Helfer wird von einer <b>dritten Person</b> eingewiesen — der Pilot darf die Stelle nicht kennen.</li>
+    <li>Suchgebiet festlegen und die Bahnen in gleicher Höhe abfliegen.</li>
+    <li>Je Durchgang eine Zeile: gefunden ja/nein, nach wie vielen Sekunden, welches Vertrauen zeigte die Bodenstation.</li>
+    <li>Fehlalarme mitzählen — sie kosten im Einsatz genauso Zeit wie ein Übersehen.</li>
+    <li>Nach jedem Abend die Fundstellen am Tablet bewerten und das Modell trainieren.</li>
+  </ol>
+</div>
+
+<div class="kopfdaten">
+  <div class="feld"><span>Datum</span><div class="linie"></div></div>
+  <div class="feld"><span>Uhrzeit</span><div class="linie"></div></div>
+  <div class="feld"><span>Ort / Flur</span><div class="linie"></div></div>
+  <div class="feld"><span>Lufttemperatur °C</span><div class="linie"></div></div>
+  <div class="feld"><span>Wind</span><div class="linie"></div></div>
+  <div class="feld"><span>Untergrund</span><div class="linie"></div></div>
+  <div class="feld"><span>Pilot</span><div class="linie"></div></div>
+  <div class="feld"><span>Bediener Bodenstation</span><div class="linie"></div></div>
+  <div class="feld"><span>Modell: Beispiele bisher</span><div class="linie"></div></div>
+</div>
+
+<table style="margin-top:10px">
+  <thead>
+    <tr>
+      <th class="schmal">Nr</th>
+      <th class="mittel">Höhe m</th>
+      <th class="mittel">Tempo m/s</th>
+      <th>Lage des Ziels</th>
+      <th class="mittel">gefunden</th>
+      <th class="mittel">nach s</th>
+      <th class="mittel">Vertrauen %</th>
+      <th class="mittel">Fehlalarme</th>
+      <th>Bemerkung</th>
+    </tr>
+  </thead>
+  <tbody id="zeilen2"></tbody>
+</table>
+
+<div class="fazit">
+  <b style="font-size:10pt">Trefferquote je Höhe</b>
+  <table style="margin-top:7px">
+    <thead>
+      <tr><th class="mittel">Höhe m</th><th class="mittel">Versuche</th><th class="mittel">gefunden</th><th class="mittel">Quote %</th><th class="mittel">Fehlalarme je Flug</th><th>Bewertung</th></tr>
+    </thead>
+    <tbody id="zeilen3"></tbody>
+  </table>
+  <b style="font-size:10pt; display:block; margin-top:11px">Der Satz, der am Ende in den Bericht gehört:</b>
+  <div style="font-size:9.5pt; margin-top:3px">
+    „Bei ____ m Höhe über ____________________ finde ich nachts ____ von 10 Personen,
+    mit im Schnitt ____ Fehlalarmen je Flug."
+  </div>
+</div>
+
+<script>
+  // Leerzeilen erzeugen - von Hand geschrieben waere das nur Fleissarbeit.
+  function zeilen(ziel, anzahl, spalten) {
+    document.getElementById(ziel).innerHTML = Array.from({length: anzahl}, (_, i) =>
+      "<tr><td class='zentriert'>" + (i + 1) + "</td>" +
+      "<td></td>".repeat(spalten - 1) + "</tr>").join("");
+  }
+  zeilen("zeilen", 14, 9);
+  zeilen("zeilen2", 16, 9);
+  document.getElementById("zeilen3").innerHTML =
+    [20, 30, 40, 50, 60].map(h =>
+      "<tr><td class='zentriert'>" + h + "</td><td></td><td></td><td></td><td></td><td></td></tr>").join("");
+</script>
+</body>
+</html>

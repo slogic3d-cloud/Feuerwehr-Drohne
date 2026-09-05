@@ -8,6 +8,8 @@ Trefferalarm mit GPS-Koordinate aufs Tablet.**
   ist und womit man anfängt
 * **[KONZEPT.md](KONZEPT.md)** — das technische Konzept: Physik, Bauteilliste,
   Rechtslage, Grenzen des Verfahrens
+* **[messprotokoll.html](messprotokoll.html)** — Messprotokoll zum Ausdrucken
+  für den Nachtversuch und die späteren Flugversuche (braucht nur einen Browser)
 
 > ⚠️ Eigenbauprojekt, kein zugelassenes Einsatzmittel. Wild und Haustiere
 > sehen im Wärmebild aus wie Menschen — **jeder Treffer muss vom Bediener am
