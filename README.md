@@ -10,6 +10,9 @@ Trefferalarm mit GPS-Koordinate aufs Tablet.**
   Rechtslage, Grenzen des Verfahrens
 * **[TEILELISTE.md](TEILELISTE.md)** — vollständige Einkaufsliste mit
   Stückzahlen, Preisen und Kaufhinweisen
+* **[GEHAEUSE.md](GEHAEUSE.md)** und
+  [gehaeuse-zeichnung.html](gehaeuse-zeichnung.html) — Konstruktionsunterlage
+  und Maßzeichnungen des Kamerahalters
 * **[messprotokoll.html](messprotokoll.html)** — Messprotokoll zum Ausdrucken
   für den Nachtversuch und die späteren Flugversuche (braucht nur einen Browser)
 

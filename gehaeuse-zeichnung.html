@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kamerahalter — Maßzeichnungen</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font: 11pt/1.45 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: #000; background: #fff; margin: 0 auto; padding: 16px; max-width: 200mm;
+  }
+  h1 { font-size: 15pt; margin: 0 0 2px; }
+  h2 {
+    font-size: 11.5pt; margin: 20px 0 4px; padding-bottom: 3px;
+    border-bottom: 1.5px solid #000; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .unter { font-size: 9pt; color: #444; }
+  .riss { width: 100%; height: auto; display: block; margin: 6px 0 2px; }
+
+  .kante  { fill: none; stroke: #000; stroke-width: .45; }
+  .voll   { fill: #d8d8d8; stroke: #000; stroke-width: .45; }
+  .loch   { fill: #fff; stroke: #000; stroke-width: .4; }
+  .auge   { fill: #eee; }
+  .tasche { fill: #f2f2f2; stroke: #000; stroke-width: .4; stroke-dasharray: 1.6 1; }
+  .gummi  { fill: #999; stroke: #000; stroke-width: .35; }
+  .mitte  { stroke: #000; stroke-width: .18; stroke-dasharray: 1.4 .8 .3 .8; }
+  .strichpunkt { fill: none; stroke: #777; stroke-width: .3; stroke-dasharray: 3 1 .6 1; }
+  .hilfe  { stroke: #555; stroke-width: .2; fill: none; }
+  .mass   { stroke: #000; stroke-width: .3; fill: none; }
+  .masstext { font-size: 3.4px; text-anchor: middle; font-family: Arial, sans-serif; }
+  .hinweistext { font-size: 3px; font-family: Arial, sans-serif; fill: #222; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-top: 6px; }
+  th, td { border: 1px solid #000; padding: 4px 6px; text-align: left; }
+  th { background: #e8e8e8; font-size: 8.5pt; text-transform: uppercase; }
+  .warn { border: 1.5px solid #000; background: #f4f4f4; padding: 9px 11px;
+          font-size: 9.5pt; line-height: 1.5; margin: 10px 0; }
+  .warn b { display: block; margin-bottom: 3px; }
+  .seitenumbruch { page-break-before: always; }
+  .drucken { text-align: right; margin-bottom: 6px; }
+  .drucken button { font: inherit; padding: 7px 14px; border: 1.5px solid #000;
+                    background: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  @media print { .drucken { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+<div class="drucken"><button onclick="window.print()">Drucken</button></div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="pfeil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4"
+            markerHeight="4" orient="auto-start-reverse">
+      <path d="M0 1 L10 5 L0 9 z" fill="#000"/>
+    </marker>
+  </defs>
+</svg>
+
+<h1>Kamerahalter für die Suchdrohne</h1>
+<div class="unter">Alle Maße in Millimetern · Zeichnung erzeugt aus
+werkzeuge/zeichnung_gehaeuse.py · Auslegung für Akku 6S1P</div>
+
+<div class="warn">
+  <b>Die mit * bezeichneten Maße sind Platzhalter.</b>
+  Die Kameratasche ist mit 27 × 18 × 10 mm angesetzt. <b style="display:inline">Vor dem
+  Konstruieren die eigene Kamera mit dem Messschieber nachmessen</b> — Gehäuse und
+  vor allem die Lage des Objektivs weichen je nach Modell ab. Alles andere in
+  dieser Zeichnung ist unabhängig davon.
+</div>
+
+<h2>Teil 1 · Grundplatte — Draufsicht</h2>
+<div class="unter">Wird direkt unter die Rahmenunterseite geschraubt. Daran hängen
+über vier Dämpferkugeln der Kameraträger und der Deckel.</div>
+<svg viewBox="-84.00 -69.00 168.00 138.00" class="riss"><rect x="-42.00" y="-27.00" width="84.00" height="54.00" rx="4.00" class="kante"/><circle cx="-15.25" cy="-15.25" r="1.60" class="loch"/><path d="M-18.45 -15.25 H-12.05 M-15.25 -18.45 V-12.05" class="mitte"/><circle cx="-32.00" cy="-19.00" r="3.10" class="loch"/><path d="M-38.20 -19.00 H-25.80 M-32.00 -25.20 V-12.80" class="mitte"/><circle cx="-15.25" cy="15.25" r="1.60" class="loch"/><path d="M-18.45 15.25 H-12.05 M-15.25 12.05 V18.45" class="mitte"/><circle cx="-32.00" cy="19.00" r="3.10" class="loch"/><path d="M-38.20 19.00 H-25.80 M-32.00 12.80 V25.20" class="mitte"/><circle cx="15.25" cy="-15.25" r="1.60" class="loch"/><path d="M12.05 -15.25 H18.45 M15.25 -18.45 V-12.05" class="mitte"/><circle cx="32.00" cy="-19.00" r="3.10" class="loch"/><path d="M25.80 -19.00 H38.20 M32.00 -25.20 V-12.80" class="mitte"/><circle cx="15.25" cy="15.25" r="1.60" class="loch"/><path d="M12.05 15.25 H18.45 M15.25 12.05 V18.45" class="mitte"/><circle cx="32.00" cy="19.00" r="3.10" class="loch"/><path d="M25.80 19.00 H38.20 M32.00 12.80 V25.20" class="mitte"/><rect x="-37.60" y="-8.00" width="3.20" height="16.00" rx="1.60" class="loch"/><rect x="34.40" y="-8.00" width="3.20" height="16.00" rx="1.60" class="loch"/><rect x="-9.00" y="-3.50" width="18.00" height="7.00" rx="3.50" class="loch"/><path d="M-42.00 -27.00 V-44.00 M42.00 -27.00 V-44.00" class="hilfe"/><path d="M-42.00 -43.00 H42.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="-44.60" class="masstext">84</text><path d="M-32.00 -27.00 V-37.00 M32.00 -27.00 V-37.00" class="hilfe"/><path d="M-32.00 -36.00 H32.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="-37.60" class="masstext">64</text><path d="M-15.25 30.00 V32.00 M15.25 30.00 V32.00" class="hilfe"/><path d="M-15.25 33.00 H15.25" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="31.40" class="masstext">30,5</text><path d="M42.00 -27.00 H59.00 M42.00 27.00 H59.00" class="hilfe"/><path d="M58.00 -27.00 V27.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="56.40" y="0.00" class="masstext" transform="rotate(-90 56.40 0.00)">54</text><path d="M42.00 -19.00 H51.00 M42.00 19.00 H51.00" class="hilfe"/><path d="M50.00 -19.00 V19.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="48.40" y="0.00" class="masstext" transform="rotate(-90 48.40 0.00)">38</text><path d="M32.00 -19.00 L45.00 -34.00" class="hilfe"/><text x="46.50" y="-32.80" class="hinweistext" text-anchor="start">4× ⌀ 6,2 Dämpfer</text><path d="M-15.25 -15.25 L-45.00 -30.00" class="hilfe"/><text x="-46.50" y="-28.80" class="hinweistext" text-anchor="end">4× ⌀ 3,2 Rahmen</text><path d="M36.00 8.00 L45.00 24.00" class="hilfe"/><text x="46.50" y="25.20" class="hinweistext" text-anchor="start">2× Langloch 3,2 × 16</text><path d="M0.00 -3.50 L0.00 -31.00" class="hilfe"/><text x="1.50" y="-29.80" class="hinweistext" text-anchor="start">Kabelschlitz 18 × 7</text></svg>
+
+<h2>Teil 2 · Kameraträger — Draufsicht</h2>
+<div class="unter">Hängt gedämpft unter der Grundplatte. Die Taschenwände zeigen
+<b>nach unten</b>, die Kamera wird von unten eingelegt und vom Deckel gehalten.</div>
+<svg viewBox="-80.00 -66.00 160.00 132.00" class="riss"><rect x="-38.00" y="-24.00" width="76.00" height="48.00" rx="4.00" class="kante"/><circle cx="-32.00" cy="-19.00" r="3.10" class="loch"/><path d="M-38.20 -19.00 H-25.80 M-32.00 -25.20 V-12.80" class="mitte"/><circle cx="-32.00" cy="19.00" r="3.10" class="loch"/><path d="M-38.20 19.00 H-25.80 M-32.00 12.80 V25.20" class="mitte"/><circle cx="32.00" cy="-19.00" r="3.10" class="loch"/><path d="M25.80 -19.00 H38.20 M32.00 -25.20 V-12.80" class="mitte"/><circle cx="32.00" cy="19.00" r="3.10" class="loch"/><path d="M25.80 19.00 H38.20 M32.00 12.80 V25.20" class="mitte"/><rect x="-15.80" y="-11.30" width="31.60" height="22.60" rx="1.50" class="kante"/><rect x="-13.80" y="-9.30" width="27.60" height="18.60" rx="1.00" class="tasche"/><rect x="-6.50" y="7.30" width="13.00" height="8.00" rx="1.00" class="loch"/><circle cx="-17.00" cy="0.00" r="1.35" class="loch"/><path d="M-19.70 0.00 H-14.30 M-17.00 -2.70 V2.70" class="mitte"/><circle cx="17.00" cy="0.00" r="1.35" class="loch"/><path d="M14.30 0.00 H19.70 M17.00 -2.70 V2.70" class="mitte"/><path d="M-38.00 -24.00 V-41.00 M38.00 -24.00 V-41.00" class="hilfe"/><path d="M-38.00 -40.00 H38.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="-41.60" class="masstext">76</text><path d="M-32.00 -24.00 V-34.00 M32.00 -24.00 V-34.00" class="hilfe"/><path d="M-32.00 -33.00 H32.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="-34.60" class="masstext">64</text><path d="M-13.80 27.00 V29.00 M13.80 27.00 V29.00" class="hilfe"/><path d="M-13.80 30.00 H13.80" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="28.40" class="masstext">27.6 *</text><path d="M38.00 -24.00 H55.00 M38.00 24.00 H55.00" class="hilfe"/><path d="M54.00 -24.00 V24.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="52.40" y="0.00" class="masstext" transform="rotate(-90 52.40 0.00)">48</text><path d="M38.00 -19.00 H47.00 M38.00 19.00 H47.00" class="hilfe"/><path d="M46.00 -19.00 V19.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="44.40" y="0.00" class="masstext" transform="rotate(-90 44.40 0.00)">38</text><path d="M-13.80 -9.30 H-43.80 M-13.80 9.30 H-43.80" class="hilfe"/><path d="M-44.80 -9.30 V9.30" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="-46.40" y="0.00" class="masstext" transform="rotate(-90 -46.40 0.00)">18.6 *</text><path d="M17.00 0.00 L45.00 6.00" class="hilfe"/><text x="46.50" y="7.20" class="hinweistext" text-anchor="start">2× ⌀ 2,7 für Deckel</text><path d="M6.50 15.30 L45.00 20.00" class="hilfe"/><text x="46.50" y="21.20" class="hinweistext" text-anchor="start">USB-C 13 × 8 (nach hinten)</text><path d="M-15.80 -11.30 L-45.00 -28.00" class="hilfe"/><text x="-46.50" y="-26.80" class="hinweistext" text-anchor="end">Tasche, Wand 2 mm</text></svg>
+
+<h2>Teil 3 · Deckel und Teil 4 · Pi-Wanne</h2>
+<div class="unter">Der Deckel hält die Kamera in der Tasche. Die Wanne nimmt den
+Raspberry Pi auf und wird oben auf das Rahmendeck geklebt oder geschnallt.</div>
+<svg viewBox="-120.00 -48.00 240.00 96.00" class="riss"><g transform="translate(-34.00 0)"><rect x="-20.00" y="-14.00" width="40.00" height="28.00" rx="2.50" class="kante"/><circle cx="0.00" cy="0.00" r="7.00" class="loch"/><path d="M-14.00 0.00 H14.00 M0.00 -14.00 V14.00" class="mitte"/><circle cx="-17.00" cy="0.00" r="1.35" class="loch"/><path d="M-19.70 0.00 H-14.30 M-17.00 -2.70 V2.70" class="mitte"/><circle cx="17.00" cy="0.00" r="1.35" class="loch"/><path d="M14.30 0.00 H19.70 M17.00 -2.70 V2.70" class="mitte"/><path d="M-20.00 -14.00 V-24.00 M20.00 -14.00 V-24.00" class="hilfe"/><path d="M-20.00 -23.00 H20.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="-24.60" class="masstext">40</text><path d="M-17.00 17.00 V19.00 M17.00 17.00 V19.00" class="hilfe"/><path d="M-17.00 20.00 H17.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="18.40" class="masstext">34</text><path d="M20.00 -14.00 H29.00 M20.00 14.00 H29.00" class="hilfe"/><path d="M28.00 -14.00 V14.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="26.40" y="0.00" class="masstext" transform="rotate(-90 26.40 0.00)">28</text><path d="M-7.00 0.00 L-26.00 -20.00" class="hilfe"/><text x="-27.50" y="-18.80" class="hinweistext" text-anchor="end">⌀ 14 Objektiv</text><text x="0" y="36.00" class="masstext">Teil 3 · Deckel, 2 mm</text></g><g transform="translate(58.00 0)"><rect x="-35.50" y="-18.00" width="71.00" height="36.00" rx="3.00" class="kante"/><rect x="-33.50" y="-16.00" width="67.00" height="32.00" rx="2.00" class="kante"/><rect x="-32.50" y="-15.00" width="65.00" height="30.00" rx="2.00" class="strichpunkt"/><circle cx="-29.00" cy="-11.50" r="1.10" class="loch"/><path d="M-31.20 -11.50 H-26.80 M-29.00 -13.70 V-9.30" class="mitte"/><circle cx="-29.00" cy="11.50" r="1.10" class="loch"/><path d="M-31.20 11.50 H-26.80 M-29.00 9.30 V13.70" class="mitte"/><circle cx="29.00" cy="-11.50" r="1.10" class="loch"/><path d="M26.80 -11.50 H31.20 M29.00 -13.70 V-9.30" class="mitte"/><circle cx="29.00" cy="11.50" r="1.10" class="loch"/><path d="M26.80 11.50 H31.20 M29.00 9.30 V13.70" class="mitte"/><rect x="-37.50" y="-7.00" width="4.00" height="14.00" rx="1.00" class="loch"/><path d="M-35.50 -18.00 V-34.00 M35.50 -18.00 V-34.00" class="hilfe"/><path d="M-35.50 -33.00 H35.50" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="-34.60" class="masstext">71</text><path d="M-29.00 -18.00 V-27.00 M29.00 -18.00 V-27.00" class="hilfe"/><path d="M-29.00 -26.00 H29.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="0.00" y="-27.60" class="masstext">58</text><path d="M35.50 -18.00 H44.50 M35.50 18.00 H44.50" class="hilfe"/><path d="M43.50 -18.00 V18.00" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="41.90" y="0.00" class="masstext" transform="rotate(-90 41.90 0.00)">36</text><path d="M-29.00 -11.50 H-50.00 M-29.00 11.50 H-50.00" class="hilfe"/><path d="M-51.00 -11.50 V11.50" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="-52.60" y="0.00" class="masstext" transform="rotate(-90 -52.60 0.00)">23</text><path d="M-33.50 7.00 L-46.00 24.00" class="hilfe"/><text x="-47.50" y="25.20" class="hinweistext" text-anchor="end">Schlitz für SD-Karte</text><path d="M29.00 11.50 L40.00 26.00" class="hilfe"/><text x="41.50" y="27.20" class="hinweistext" text-anchor="start">4× ⌀ 2,2 (M2,5)</text><text x="0" y="48.00" class="masstext">Teil 4 · Pi-Wanne, Rand 6 mm</text></g></svg>
+
+<div class="seitenumbruch"></div>
+
+<h2>Zusammenbau — Seitenschnitt</h2>
+<svg viewBox="-94.00 -77.00 188.00 154.00" class="riss"><path d="M-52.00 -6.00 H52.00" class="strichpunkt"/><path d="M-50.00 -6.00 L-52.00 -15.00" class="hilfe"/><text x="-53.50" y="-13.80" class="hinweistext" text-anchor="end">Rahmenunterseite</text><rect x="-42.00" y="-6.00" width="84.00" height="3.00" rx="0.00" class="voll"/><path d="M-42.00 -4.50 L-52.00 -1.00" class="hilfe"/><text x="-53.50" y="0.20" class="hinweistext" text-anchor="end">Teil 1 · Grundplatte</text><circle cx="-32.00" cy="1.00" r="4.0" class="gummi"/><circle cx="32.00" cy="1.00" r="4.0" class="gummi"/><path d="M32.00 1.00 L54.00 -4.00" class="hilfe"/><text x="55.50" y="-2.80" class="hinweistext" text-anchor="start">Dämpferkugel, 8 mm</text><rect x="-38.00" y="5.00" width="76.00" height="3.00" rx="0.00" class="voll"/><path d="M-38.00 6.50 L-52.00 9.00" class="hilfe"/><text x="-53.50" y="10.20" class="hinweistext" text-anchor="end">Teil 2 · Kameraträger</text><rect x="-15.80" y="8.00" width="2.00" height="11.30" rx="0.00" class="voll"/><rect x="13.80" y="8.00" width="2.00" height="11.30" rx="0.00" class="voll"/><rect x="-13.80" y="8.00" width="27.60" height="10.30" rx="0.00" class="kante"/><path d="M13.80 13.15 L54.00 18.00" class="hilfe"/><text x="55.50" y="19.20" class="hinweistext" text-anchor="start">Kamera, von unten eingelegt</text><rect x="-20.00" y="19.30" width="40.00" height="2.00" rx="0.00" class="voll"/><path d="M-20.00 20.30 L-52.00 26.30" class="hilfe"/><text x="-53.50" y="27.50" class="hinweistext" text-anchor="end">Teil 3 · Deckel</text><path d="M0 21.30 V33.30" class="mass" marker-end="url(#pfeil)"/><text x="3" y="31.30" class="hinweistext">Blickrichtung nach unten</text><path d="M42.00 -6.00 H47.00 M42.00 21.30 H47.00" class="hilfe"/><path d="M46.00 -6.00 V21.30" class="mass" marker-start="url(#pfeil)" marker-end="url(#pfeil)"/><text x="44.40" y="7.65" class="masstext" transform="rotate(-90 44.40 7.65)">27 Bauhöhe</text></svg>
+
+<h2>Lochbilder auf einen Blick</h2>
+<table>
+  <tr><th>Wofür</th><th>Bohrung</th><th>Rastermaß</th><th>Bemerkung</th></tr>
+  <tr><td>Rahmenbefestigung</td><td>⌀ 3,2 mm</td><td>30,5 × 30,5</td><td>Standardmaß für Flugregler-Stapel</td></tr>
+  <tr><td>Rahmen, abweichend</td><td>Langloch 3,2 × 16</td><td>± 36 in x</td><td>gleicht andere Rahmen aus</td></tr>
+  <tr><td>Raspberry Pi Zero 2 W</td><td>⌀ 2,2 mm</td><td>58 × 23</td><td>in der Pi-Wanne; M2,5 schneidet sich selbst ein</td></tr>
+  <tr><td>Deckel am Kameraträger</td><td>⌀ 2,7 mm</td><td>34 in x</td><td>M2,5 Durchgang</td></tr>
+  <tr><td>Dämpferkugeln</td><td>⌀ 6,2 mm</td><td>64 × 38</td><td>in beiden Platten gleich</td></tr>
+  <tr><td>Kabeldurchlass</td><td>18 × 7 mm</td><td>mittig</td><td>USB-Kabel von der Wanne zur Kamera</td></tr>
+</table>
+
+<h2>Druckeinstellungen</h2>
+<table>
+  <tr><th>Einstellung</th><th>Wert</th><th>Warum</th></tr>
+  <tr><td>Material</td><td>ABS oder ABS-CF</td><td>PETG, wenn der Drucker keine geschlossene Kammer hat</td></tr>
+  <tr><td>Schichthöhe</td><td>0,2 mm</td><td></td></tr>
+  <tr><td>Wandlinien</td><td>4</td><td>die Festigkeit steckt in den Wänden, nicht in der Füllung</td></tr>
+  <tr><td>Füllung</td><td>30 %, Gyroid</td><td></td></tr>
+  <tr><td>Lage</td><td>beide Platten flach auf dem Bett</td><td>alle Bohrungen senkrecht, keine Stützen nötig</td></tr>
+  <tr><td>Rand</td><td>5 mm Brim bei ABS</td><td>gegen Verzug an den Ecken</td></tr>
+</table>
+
+<div class="warn">
+  <b>Zuerst eine Passprobe drucken.</b>
+  Ein Reststück mit je einer ⌀ 3,2-, ⌀ 2,2- und ⌀ 6,2-Bohrung, zehn Minuten
+  Druckzeit. Schraube, Gewinde und Dämpferkugel daran ausprobieren und die
+  Durchmesser im Modell nachziehen, bevor die großen Teile laufen. Jeder Drucker
+  liegt anders — meist 0,1 bis 0,2 mm zu eng.
+</div>
+
+<div class="warn">
+  <b>Einbaulage der Kamera — das ist keine Kosmetik.</b>
+  Die Software rechnet aus einem Bildpunkt die GPS-Koordinate der Fundstelle.
+  Dabei gilt: <b style="display:inline">oben im Bild ist vorne in Flugrichtung.</b>
+  Die Kamera also so einsetzen, dass ihre Bildoberkante zur Nase der Drohne zeigt.
+  Steht sie verdreht, stimmen die gemeldeten Koordinaten nicht — und der Trupp
+  sucht an der falschen Stelle.
+</div>
+</body>
+</html>
+

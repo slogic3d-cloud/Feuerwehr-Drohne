@@ -110,9 +110,11 @@ ohne zu überlegen.
 
 ## A4 — Konstruktion
 
-- [ ] Maße der Kamera und des Pi aus den Datenblättern holen
-- [ ] Halter konstruieren: Kamera senkrecht nach unten, Pi daneben,
-      Kabelführung, Vibrationsdämpfung
+- [ ] **[GEHAEUSE.md](GEHAEUSE.md)** und die Maßzeichnungen in
+      [gehaeuse-zeichnung.html](gehaeuse-zeichnung.html) durchgehen
+- [ ] Die vier Teile in Fusion 360 nachzeichnen — Parameterliste steht in
+      GEHAEUSE.md
+- [ ] Passprobe drucken und die Bohrungsdurchmesser nachziehen
 - [ ] Probedrucke in ABS oder ABS-CF — auch um herauszufinden, ob dein Drucker
       ABS überhaupt sauber hinbekommt (ohne geschlossene Kammer zieht es sich
       krumm; dann PETG nehmen und auf die 80 °C verzichten)
