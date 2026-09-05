@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#b3261e">
+<title>Einsatz-Helfer Feuerwehr</title>
+<style>
+:root{
+  --rot:#b3261e; --rot-hell:#e14b40; --rot-weich:#fdecea;
+  --bg:#f4f5f7; --karte:#ffffff; --text:#16181d; --text-schwach:#5f6672;
+  --rand:#e2e5ea; --gruen:#1e7a3c; --gruen-weich:#e6f4ea;
+  --gelb:#8a5d00; --gelb-weich:#fdf3d8; --grau-weich:#eceef2;
+  --schatten:0 1px 2px rgba(16,18,22,.06), 0 4px 12px rgba(16,18,22,.05);
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --rot:#ff6b5e; --rot-hell:#ff8a80; --rot-weich:#3a1b18;
+    --bg:#0f1116; --karte:#181b21; --text:#e8eaee; --text-schwach:#98a0af;
+    --rand:#282d36; --gruen:#5ecb7e; --gruen-weich:#14301e;
+    --gelb:#f0c05a; --gelb-weich:#33290f; --grau-weich:#22262e;
+    --schatten:0 1px 2px rgba(0,0,0,.5), 0 4px 14px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; padding-bottom:86px;
+}
+h1,h2,h3{margin:0; line-height:1.25; font-weight:650; letter-spacing:-.01em}
+button{font:inherit; cursor:pointer}
+input,select,textarea{font:inherit; color:inherit}
+
+header{
+  background:var(--rot); color:#fff; display:flex; align-items:center; gap:11px;
+  padding:12px 15px; padding-top:calc(12px + env(safe-area-inset-top,0px));
+  position:sticky; top:0; z-index:30;
+}
+header .logo{font-size:24px; line-height:1}
+header h1{font-size:16px}
+header .sub{font-size:12px; opacity:.88; margin-top:1px; font-variant-numeric:tabular-nums}
+header .spacer{flex:1}
+header .kopf-btn{
+  background:rgba(255,255,255,.18); border:0; color:#fff; border-radius:9px;
+  padding:8px 12px; font-size:13px; font-weight:650;
+}
+header .kopf-btn:hover{background:rgba(255,255,255,.3)}
+
+main{max-width:900px; margin:0 auto; padding:14px 13px 22px}
+.karte{
+  background:var(--karte); border:1px solid var(--rand); border-radius:var(--r);
+  box-shadow:var(--schatten); padding:15px; margin-bottom:13px;
+}
+.karte h2{font-size:15px; margin-bottom:12px; display:flex; align-items:center; gap:8px}
+.karte h2 .zahl{font-size:12px; font-weight:600; color:var(--text-schwach); background:var(--grau-weich); border-radius:20px; padding:2px 8px}
+.leer{color:var(--text-schwach); font-size:14px; text-align:center; padding:20px 10px}
+.leer strong{display:block; color:var(--text); margin-bottom:4px; font-size:15px}
+.hilfetext{font-size:12.5px; color:var(--text-schwach); margin-top:8px}
+
+.warnbox{
+  background:var(--gelb-weich); color:var(--gelb); border-radius:11px; padding:11px 13px;
+  font-size:12.5px; line-height:1.45; margin-bottom:13px; font-weight:600;
+}
+
+.btn{
+  border:1px solid var(--rand); background:var(--karte); color:var(--text);
+  border-radius:10px; padding:10px 15px; font-size:14px; font-weight:650;
+}
+.btn:hover{border-color:var(--text-schwach)}
+.btn.primaer{background:var(--rot); border-color:var(--rot); color:#fff}
+.btn.primaer:hover{background:var(--rot-hell); border-color:var(--rot-hell)}
+.btn.klein{padding:6px 11px; font-size:13px; border-radius:9px}
+.btn.breit{width:100%}
+.btn.gefahr{color:var(--rot); border-color:var(--rot)}
+.btn-reihe{display:flex; gap:8px; flex-wrap:wrap}
+.icon-btn{background:none; border:0; color:var(--text-schwach); font-size:17px; padding:6px; border-radius:8px; line-height:1}
+.icon-btn:hover{background:var(--grau-weich); color:var(--text)}
+
+label{display:block; font-size:12.5px; font-weight:650; color:var(--text-schwach); margin-bottom:5px}
+input[type=text],input[type=number],input[type=date],input[type=time],select,textarea{
+  width:100%; padding:10px 11px; border:1px solid var(--rand); border-radius:10px;
+  background:var(--bg); outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--rot); box-shadow:0 0 0 3px var(--rot-weich)}
+.feld{margin-bottom:12px}
+.feld-paar{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+
+/* ---- Trupp-Karte ---- */
+.trupp{border-radius:var(--r); border:1px solid var(--rand); background:var(--karte);
+  box-shadow:var(--schatten); padding:14px; margin-bottom:12px; border-left:5px solid var(--gruen)}
+.trupp.stufe-gelb{border-left-color:var(--gelb)}
+.trupp.stufe-rot{border-left-color:var(--rot); background:var(--rot-weich)}
+.trupp .kopf{display:flex; align-items:flex-start; gap:10px}
+.trupp .kopf .haupt{flex:1; min-width:0}
+.trupp .tname{font-size:16px; font-weight:700}
+.trupp .tleute{font-size:13px; color:var(--text-schwach); margin-top:2px}
+.werte{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:12px 0 11px}
+.wert{background:var(--bg); border-radius:10px; padding:8px 9px; text-align:center}
+.wert .z{font-size:19px; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.wert .b{font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-schwach); font-weight:700; margin-top:1px}
+.wert.alarm .z{color:var(--rot)}
+.wert.warn .z{color:var(--gelb)}
+.alarmzeile{
+  background:var(--rot); color:#fff; border-radius:10px; padding:9px 12px; font-size:13.5px;
+  font-weight:700; margin-bottom:11px; animation:pulsieren 1.1s ease-in-out infinite;
+}
+@keyframes pulsieren{50%{opacity:.55}}
+.kontrollen{font-size:12px; color:var(--text-schwach); margin-top:9px; word-break:break-word}
+
+.chips{display:flex; flex-wrap:wrap; gap:5px}
+.chip{font-size:11px; font-weight:650; padding:2px 8px; border-radius:20px; background:var(--grau-weich); color:var(--text-schwach)}
+.chip.gruen{background:var(--gruen-weich); color:var(--gruen)}
+.chip.rot{background:var(--rot-weich); color:var(--rot)}
+.chip.gelb{background:var(--gelb-weich); color:var(--gelb)}
+
+/* ---- Tagebuch ---- */
+.tb-zeile{display:flex; gap:11px; padding:10px 0; border-top:1px solid var(--rand)}
+.tb-zeile:first-of-type{border-top:0}
+.tb-zeit{font-variant-numeric:tabular-nums; font-weight:700; font-size:13.5px; flex:none; width:46px; color:var(--rot)}
+.tb-text{flex:1; min-width:0; word-wrap:break-word}
+.tb-kat{font-size:11px; font-weight:700; color:var(--text-schwach); text-transform:uppercase; letter-spacing:.04em}
+.schnellwahl{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px}
+.schnellwahl button{
+  border:1px solid var(--rand); background:var(--bg); color:var(--text);
+  border-radius:20px; padding:7px 12px; font-size:13px; font-weight:600;
+}
+.schnellwahl button:hover{border-color:var(--rot); color:var(--rot)}
+
+/* ---- Rechner ---- */
+.reiter{display:flex; gap:6px; overflow-x:auto; margin-bottom:13px; padding-bottom:2px}
+.reiter button{
+  border:1px solid var(--rand); background:var(--karte); color:var(--text-schwach);
+  border-radius:20px; padding:7px 13px; font-size:13px; font-weight:650; white-space:nowrap;
+}
+.reiter button.an{background:var(--rot); border-color:var(--rot); color:#fff}
+.ergebnis{
+  background:var(--gruen-weich); border-radius:11px; padding:13px; margin-top:12px;
+}
+.ergebnis .gross{font-size:27px; font-weight:700; color:var(--gruen); letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.ergebnis .zeile{display:flex; justify-content:space-between; gap:10px; font-size:13.5px; margin-top:6px}
+.ergebnis .zeile span:last-child{font-weight:700; font-variant-numeric:tabular-nums}
+
+.overlay{position:fixed; inset:0; background:rgba(8,10,14,.6); z-index:60; display:flex; align-items:flex-end; justify-content:center}
+@media(min-width:620px){.overlay{align-items:center; padding:20px}}
+.dialog{
+  background:var(--karte); width:100%; max-width:520px; max-height:92vh; overflow-y:auto;
+  border-radius:18px 18px 0 0; padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));
+}
+@media(min-width:620px){.dialog{border-radius:18px}}
+.dialog h3{font-size:17px; margin-bottom:14px}
+
+nav{
+  position:fixed; bottom:0; left:0; right:0; z-index:40;
+  background:var(--karte); border-top:1px solid var(--rand); display:flex;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+nav button{
+  flex:1; background:none; border:0; padding:9px 2px 10px; color:var(--text-schwach);
+  display:flex; flex-direction:column; align-items:center; gap:3px; font-size:10.5px; font-weight:650;
+}
+nav button .ic{font-size:19px; line-height:1}
+nav button.an{color:var(--rot)}
+
+.toast{
+  position:fixed; left:50%; transform:translateX(-50%); bottom:94px; z-index:80;
+  background:var(--text); color:var(--bg); padding:11px 17px; border-radius:11px;
+  font-size:14px; font-weight:650; box-shadow:var(--schatten); max-width:90vw; text-align:center;
+}
+.tabelle{width:100%; border-collapse:collapse; font-size:13.5px}
+.tabelle th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-schwach); padding:0 8px 7px 0; font-weight:700}
+.tabelle td{padding:8px 8px 8px 0; border-top:1px solid var(--rand); font-variant-numeric:tabular-nums}
+.tabelle td:last-child,.tabelle th:last-child{padding-right:0; text-align:right}
+
+@media print{
+  header,nav,.nicht-drucken{display:none !important}
+  body{background:#fff; color:#000; padding:0}
+  .karte,.trupp{box-shadow:none; border:1px solid #999; page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🚒</span>
+  <div>
+    <h1>Einsatz-Helfer</h1>
+    <div class="sub" id="kopf-sub">Bereit</div>
+  </div>
+  <span class="spacer"></span>
+  <button class="kopf-btn" id="btn-kopf">Einsatz starten</button>
+</header>
+
+<main id="inhalt"></main>
+
+<nav>
+  <button data-ansicht="atemschutz" class="an"><span class="ic">🫁</span>Atemschutz</button>
+  <button data-ansicht="tagebuch"><span class="ic">📝</span>Tagebuch</button>
+  <button data-ansicht="rechner"><span class="ic">🧮</span>Rechner</button>
+  <button data-ansicht="daten"><span class="ic">⚙️</span>Daten</button>
+</nav>
+
+<div id="dialog-halter"></div>
+
+<script>
+"use strict";
+
+/* ==========================================================================
+   Einsatz-Helfer Feuerwehr
+   Laeuft komplett offline. Alle Daten bleiben im localStorage des Geraets.
+   Hilfsmittel - ersetzt keine Atemschutzueberwachungstafel und keine FwDV.
+   ========================================================================== */
+
+const SPEICHER   = "fw-einsatzhelfer-v1";
+const KONTROLLE_SEK   = 10 * 60;   // Druckkontrolle spaetestens alle 10 Minuten (FwDV 7)
+const VORWARNUNG_SEK  = 8 * 60;    // ab hier gelb einfaerben
+const WARNPFIFF_BAR   = 60;        // Restdruckwarner der Pressluftatmer
+
+let daten   = laden();
+let ansicht = "atemschutz";
+let rechnerReiter = "druckverlust";
+let uhrLaeuft = null;
+
+/* ------------------------------ Speicher ------------------------------ */
+
+function leereDaten(){
+  return { einsatz:null, trupps:[], tagebuch:[], archiv:[], version:1 };
+}
+
+function laden(){
+  try{
+    const roh = localStorage.getItem(SPEICHER);
+    if(!roh) return leereDaten();
+    const d = JSON.parse(roh);
+    return {
+      einsatz : d.einsatz  || null,
+      trupps  : d.trupps   || [],
+      tagebuch: d.tagebuch || [],
+      archiv  : d.archiv   || [],
+      version : 1
+    };
+  }catch(e){
+    console.warn("Daten nicht lesbar:", e);
+    return leereDaten();
+  }
+}
+
+function sichern(){
+  try{ localStorage.setItem(SPEICHER, JSON.stringify(daten)); }
+  catch(e){ melde("Speichern fehlgeschlagen – Speicher voll?"); }
+}
+
+/* ------------------------------ Helfer ------------------------------ */
+
+const $ = (sel, wurzel=document) => wurzel.querySelector(sel);
+const jetzt = () => Date.now();
+const neueId = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/** Sekunden -> "MM:SS" bzw. "H:MM:SS" */
+function dauer(sek){
+  sek = Math.max(0, Math.floor(sek));
+  const h = Math.floor(sek/3600), m = Math.floor(sek%3600/60), s = sek%60;
+  const zz = n => String(n).padStart(2,"0");
+  return h > 0 ? h + ":" + zz(m) + ":" + zz(s) : zz(m) + ":" + zz(s);
+}
+
+function uhrzeit(ms){
+  return new Date(ms).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+}
+function uhrzeitSek(ms){
+  return new Date(ms).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+}
+function datumZeit(ms){
+  return new Date(ms).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+
+function zahl(wert, stellen=1){
+  if(!isFinite(wert)) return "–";
+  return wert.toLocaleString("de-DE",{minimumFractionDigits:stellen, maximumFractionDigits:stellen});
+}
+
+function melde(text){
+  const alt = $(".toast"); if(alt) alt.remove();
+  const el = document.createElement("div");
+  el.className = "toast"; el.textContent = text;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2800);
+}
+
+/** Kurzer Signalton ueber die WebAudio-API (kein externes Audio noetig). */
+let audioKtx = null;
+function piep(){
+  try{
+    audioKtx = audioKtx || new (window.AudioContext || window.webkitAudioContext)();
+    if(audioKtx.state === "suspended") audioKtx.resume();
+    const o = audioKtx.createOscillator(), g = audioKtx.createGain();
+    o.type = "square"; o.frequency.value = 880;
+    g.gain.setValueAtTime(0.0001, audioKtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, audioKtx.currentTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioKtx.currentTime + 0.45);
+    o.connect(g); g.connect(audioKtx.destination);
+    o.start(); o.stop(audioKtx.currentTime + 0.46);
+  }catch(e){ /* Ton ist Zusatz, kein Muss */ }
+}
+
+/* --------------------- Atemschutz: Rechenregeln --------------------- */
+
+/**
+ * Rueckzugsdruck nach der gelaeufigen Faustformel:
+ *   doppelter Anmarschverbrauch + Sicherheitszuschlag (Warnpfiff 60 bar + 10 bar Reserve).
+ * Ohne gemeldeten Druck am Einsatzziel greift ersatzweise die Ein-Drittel-Regel.
+ */
+function rueckzugsdruck(t){
+  if(t.zieldruck != null && t.zieldruck > 0){
+    const anmarsch = Math.max(0, t.startdruck - t.zieldruck);
+    return Math.round(2 * anmarsch + WARNPFIFF_BAR + 10);
+  }
+  return Math.round(Math.max(WARNPFIFF_BAR, t.startdruck / 3));
+}
+
+function letzterDruck(t){
+  if(t.kontrollen && t.kontrollen.length) return t.kontrollen[t.kontrollen.length-1].druck;
+  return t.startdruck;
+}
+function letzteKontrolleMs(t){
+  if(t.kontrollen && t.kontrollen.length) return t.kontrollen[t.kontrollen.length-1].t;
+  return t.start;
+}
+
+/** Ampelstufe eines Trupps: "gruen" | "gelb" | "rot" */
+function stufe(t){
+  if(t.ende) return "gruen";
+  const seitKontrolle = (jetzt() - letzteKontrolleMs(t)) / 1000;
+  const druck = letzterDruck(t);
+  if(druck <= rueckzugsdruck(t) || seitKontrolle >= KONTROLLE_SEK) return "rot";
+  if(seitKontrolle >= VORWARNUNG_SEK || druck <= rueckzugsdruck(t) + 20) return "gelb";
+  return "gruen";
+}
+
+function aktiveTrupps(){ return daten.trupps.filter(t => !t.ende); }
+
+/* ------------------------------ Tagebuch ------------------------------ */
+
+function protokoll(text, kat="System"){
+  daten.tagebuch.push({ id:neueId(), t:jetzt(), kat, text });
+  sichern();
+}
+
+/* ------------------------------ Ansichten ------------------------------ */
+
+function zeichne(){
+  const el = $("#inhalt");
+  if(ansicht === "atemschutz")      el.innerHTML = ansichtAtemschutz();
+  else if(ansicht === "tagebuch")   el.innerHTML = ansichtTagebuch();
+  else if(ansicht === "rechner")    el.innerHTML = ansichtRechner();
+  else                              el.innerHTML = ansichtDaten();
+
+  document.querySelectorAll("nav button").forEach(b =>
+    b.classList.toggle("an", b.dataset.ansicht === ansicht));
+
+  const e = daten.einsatz;
+  $("#kopf-sub").textContent = e
+    ? (e.stichwort || "Einsatz") + " · " + dauer((jetzt() - e.start)/1000)
+    : "Bereit";
+  $("#btn-kopf").textContent = e ? "Einsatz beenden" : "Einsatz starten";
+}
+
+/* --- Atemschutzueberwachung --- */
+
+function ansichtAtemschutz(){
+  const offen = aktiveTrupps();
+  const fertig = daten.trupps.filter(t => t.ende);
+  let h = "";
+
+  h += '<div class="warnbox">⚠️ Hilfsmittel zur Unterstützung – ersetzt <b>nicht</b> die '
+     + 'Atemschutzüberwachung nach FwDV 7 und nicht die Überwachungstafel. '
+     + 'Gerät und Uhr am Trupp gelten immer vor der App.</div>';
+
+  if(!daten.einsatz){
+    h += '<div class="karte"><div class="leer"><strong>Kein Einsatz aktiv</strong>'
+       + 'Starte oben rechts einen Einsatz. Trupps kannst du auch ohne Einsatz überwachen.</div></div>';
+  }
+
+  h += '<button class="btn primaer breit nicht-drucken" data-tun="trupp-neu" style="margin-bottom:13px">'
+     + '+ Trupp unter Atemschutz</button>';
+
+  if(offen.length === 0 && fertig.length === 0){
+    h += '<div class="karte"><div class="leer"><strong>Noch kein Trupp erfasst</strong>'
+       + 'Beim Anlegen brauchst du Truppname, Namen und den Startdruck (bar).</div></div>';
+  }
+
+  offen.forEach(t => { h += truppKarte(t); });
+
+  if(fertig.length){
+    h += '<div class="karte"><h2>Zurückgekehrt <span class="zahl">' + fertig.length + '</span></h2>';
+    fertig.slice().reverse().forEach(t => {
+      const min = Math.round((t.ende - t.start)/60000);
+      h += '<div style="padding:9px 0;border-top:1px solid var(--rand)">'
+         + '<b>' + esc(t.name) + '</b> · ' + esc((t.leute||[]).join(", ")) + '<br>'
+         + '<span style="font-size:12.5px;color:var(--text-schwach)">'
+         + uhrzeit(t.start) + '–' + uhrzeit(t.ende) + ' · ' + min + ' min · '
+         + t.startdruck + ' → ' + letzterDruck(t) + ' bar</span></div>';
+    });
+    h += '</div>';
+  }
+  return h;
+}
+
+function truppKarte(t){
+  const st       = stufe(t);
+  const einsatzS = (jetzt() - t.start)/1000;
+  const kontrS   = (jetzt() - letzteKontrolleMs(t))/1000;
+  const druck    = letzterDruck(t);
+  const rueck    = rueckzugsdruck(t);
+  const restS    = Math.max(0, KONTROLLE_SEK - kontrS);
+
+  let h = '<div class="trupp stufe-' + st + '">';
+
+  if(druck <= rueck){
+    h += '<div class="alarmzeile">🔴 Rückzugsdruck erreicht – Trupp zurückbefehlen!</div>';
+  }else if(kontrS >= KONTROLLE_SEK){
+    h += '<div class="alarmzeile">🔴 Druckkontrolle überfällig – Trupp abfragen!</div>';
+  }
+
+  h += '<div class="kopf"><div class="haupt">'
+     + '<div class="tname">' + esc(t.name) + '</div>'
+     + '<div class="tleute">' + esc((t.leute||[]).join(" · ") || "keine Namen erfasst") + '</div>'
+     + '<div class="chips" style="margin-top:6px">'
+     + '<span class="chip">seit ' + uhrzeit(t.start) + '</span>'
+     + (t.auftrag ? '<span class="chip">' + esc(t.auftrag) + '</span>' : '')
+     + (t.zieldruck != null ? '<span class="chip">Ziel bei ' + t.zieldruck + ' bar</span>' : '<span class="chip gelb">⅓-Regel</span>')
+     + '</div></div>'
+     + '<button class="icon-btn nicht-drucken" data-tun="trupp-loeschen" data-id="' + t.id + '" title="Trupp löschen">🗑</button>'
+     + '</div>';
+
+  h += '<div class="werte">'
+     + '<div class="wert"><div class="z">' + dauer(einsatzS) + '</div><div class="b">Einsatzzeit</div></div>'
+     + '<div class="wert ' + (druck <= rueck ? "alarm" : druck <= rueck + 20 ? "warn" : "") + '">'
+       + '<div class="z">' + druck + '</div><div class="b">bar aktuell</div></div>'
+     + '<div class="wert ' + (kontrS >= KONTROLLE_SEK ? "alarm" : kontrS >= VORWARNUNG_SEK ? "warn" : "") + '">'
+       + '<div class="z">' + dauer(restS) + '</div><div class="b">bis Kontrolle</div></div>'
+     + '</div>';
+
+  h += '<div class="btn-reihe nicht-drucken">'
+     + '<button class="btn primaer klein" data-tun="druck" data-id="' + t.id + '">Druck melden</button>'
+     + (t.zieldruck == null
+        ? '<button class="btn klein" data-tun="ziel" data-id="' + t.id + '">Am Einsatzziel</button>' : '')
+     + '<button class="btn klein" data-tun="notiz" data-id="' + t.id + '">Notiz</button>'
+     + '<button class="btn klein gefahr" data-tun="zurueck" data-id="' + t.id + '">Trupp zurück</button>'
+     + '</div>';
+
+  h += '<div class="kontrollen">Rückzugsdruck <b>' + rueck + ' bar</b>'
+     + ' · Start ' + t.startdruck + ' bar';
+  if(t.kontrollen && t.kontrollen.length){
+    h += '<br>Kontrollen: ' + t.kontrollen.map(k => uhrzeit(k.t) + " · " + k.druck + " bar").join("  |  ");
+  }
+  h += '</div></div>';
+  return h;
+}
+
+/* --- Einsatztagebuch --- */
+
+const SCHNELL = [
+  "Alarmierung", "Ausgerückt", "Eintreffen Einsatzstelle", "Lage erkundet",
+  "Wasser marsch", "Angriffstrupp vor", "Menschenrettung eingeleitet",
+  "Feuer unter Kontrolle", "Feuer aus", "Nachlöscharbeiten",
+  "Einsatzstelle übergeben", "Einrücken"
+];
+
+function ansichtTagebuch(){
+  let h = "";
+  h += '<div class="karte nicht-drucken"><h2>Neuer Eintrag</h2>'
+     + '<div class="schnellwahl">'
+     + SCHNELL.map(s => '<button data-tun="tb-schnell" data-text="' + esc(s) + '">' + esc(s) + '</button>').join("")
+     + '</div>'
+     + '<div class="feld"><textarea id="tb-text" rows="2" placeholder="Eigener Eintrag – Meldung, Befehl, Lage …"></textarea></div>'
+     + '<div class="btn-reihe">'
+     + '<select id="tb-kat" style="flex:1">'
+     + ["Meldung","Befehl","Lage","Funk","Sonstiges"].map(k => '<option>' + k + '</option>').join("")
+     + '</select>'
+     + '<button class="btn primaer" data-tun="tb-add">Eintragen</button>'
+     + '</div></div>';
+
+  h += '<div class="karte"><h2>Einsatztagebuch <span class="zahl">' + daten.tagebuch.length + '</span></h2>';
+  if(!daten.tagebuch.length){
+    h += '<div class="leer"><strong>Noch nichts protokolliert</strong>'
+       + 'Jeder Eintrag bekommt automatisch einen Zeitstempel.</div>';
+  }else{
+    daten.tagebuch.slice().reverse().forEach(e => {
+      h += '<div class="tb-zeile">'
+         + '<div class="tb-zeit">' + uhrzeit(e.t) + '</div>'
+         + '<div class="tb-text"><div class="tb-kat">' + esc(e.kat) + '</div>' + esc(e.text) + '</div>'
+         + '<button class="icon-btn nicht-drucken" data-tun="tb-loeschen" data-id="' + e.id + '">🗑</button>'
+         + '</div>';
+    });
+  }
+  h += '</div>';
+
+  if(daten.tagebuch.length){
+    h += '<div class="btn-reihe nicht-drucken">'
+       + '<button class="btn" data-tun="tb-kopieren">📋 Als Text kopieren</button>'
+       + '<button class="btn" data-tun="drucken">🖨 Drucken / PDF</button>'
+       + '</div>';
+  }
+  return h;
+}
+
+/* --- Rechner --- */
+
+/* Naeherungswerte fuer den Druckverlust: dp = k * (Q/100)^2 je 100 m Leitung. */
+const SCHLAEUCHE = [
+  { id:"a110", name:"A 110 mm", k:0.0047 },
+  { id:"b75",  name:"B 75 mm",  k:0.028  },
+  { id:"c52",  name:"C 52 mm",  k:0.175  },
+  { id:"c42",  name:"C 42 mm",  k:0.55   },
+  { id:"d25",  name:"D 25 mm",  k:4.0    },
+];
+
+/* Richtwerte fuer den Durchfluss bei 5 bar Strahlrohrdruck. */
+const STRAHLROHRE = [
+  { name:"C-Rohr mit Mundstück",   lmin:100  },
+  { name:"C-Rohr ohne Mundstück",  lmin:200  },
+  { name:"C-Hohlstrahlrohr",       lmin:235  },
+  { name:"B-Rohr mit Mundstück",   lmin:400  },
+  { name:"B-Rohr ohne Mundstück",  lmin:800  },
+  { name:"Schnellangriff D",       lmin:50   },
+  { name:"Wasserwerfer",           lmin:1600 },
+];
+
+const RECHNER_REITER = [
+  { id:"druckverlust", name:"Pumpendruck" },
+  { id:"luft",         name:"Luftvorrat" },
+  { id:"wasser",       name:"Wasserbedarf" },
+  { id:"schaum",       name:"Schaum" },
+];
+
+function ansichtRechner(){
+  let h = '<div class="reiter">'
+    + RECHNER_REITER.map(r =>
+        '<button data-tun="reiter" data-id="' + r.id + '" class="' + (rechnerReiter === r.id ? "an" : "") + '">'
+        + r.name + '</button>').join("")
+    + '</div>';
+
+  if(rechnerReiter === "druckverlust"){
+    h += '<div class="karte"><h2>Benötigter Pumpenausgangsdruck</h2>'
+       + '<div class="feld-paar">'
+       + '<div class="feld"><label>Schlauch</label><select id="r-schlauch">'
+       + SCHLAEUCHE.map(s => '<option value="' + s.id + '"' + (s.id==="b75"?" selected":"") + '>' + s.name + '</option>').join("")
+       + '</select></div>'
+       + '<div class="feld"><label>Länge (m)</label><input type="number" id="r-laenge" value="200" min="0" step="20"></div>'
+       + '</div>'
+       + '<div class="feld-paar">'
+       + '<div class="feld"><label>Durchfluss (l/min)</label><input type="number" id="r-q" value="800" min="0" step="50"></div>'
+       + '<div class="feld"><label>Höhendifferenz (m)</label><input type="number" id="r-hoehe" value="0" step="1"></div>'
+       + '</div>'
+       + '<div class="feld"><label>Strahlrohrdruck (bar)</label><input type="number" id="r-sd" value="5" step="0.5" min="0"></div>'
+       + '<div id="r-ergebnis"></div>'
+       + '<div class="hilfetext">Näherung: Δp = k · (Q/100)² je 100 m. Höhe mit 1 bar je 10 m. '
+       + 'Verteiler, Armaturen und Reibung im echten Schlauch sind nicht enthalten – vor Ort am Manometer nachregeln.</div>'
+       + '</div>';
+  }
+
+  if(rechnerReiter === "luft"){
+    h += '<div class="karte"><h2>Verbleibende Einsatzzeit</h2>'
+       + '<div class="feld-paar">'
+       + '<div class="feld"><label>Flaschenvolumen (l)</label><select id="l-vol">'
+       + '<option value="6">1 × 6 l</option><option value="6.8">1 × 6,8 l</option>'
+       + '<option value="8">2 × 4 l</option><option value="13.6">2 × 6,8 l</option>'
+       + '</select></div>'
+       + '<div class="feld"><label>Aktueller Druck (bar)</label><input type="number" id="l-druck" value="300" min="0" step="10"></div>'
+       + '</div>'
+       + '<div class="feld-paar">'
+       + '<div class="feld"><label>Reservedruck (bar)</label><input type="number" id="l-reserve" value="60" min="0" step="5"></div>'
+       + '<div class="feld"><label>Atemminutenvolumen</label><select id="l-amv">'
+       + '<option value="30">30 l/min – leicht</option><option value="40" selected>40 l/min – mittel</option>'
+       + '<option value="60">60 l/min – schwer</option><option value="80">80 l/min – sehr schwer</option>'
+       + '</select></div>'
+       + '</div>'
+       + '<div id="l-ergebnis"></div>'
+       + '<div class="hilfetext">Rechnerischer Richtwert. Der tatsächliche Verbrauch schwankt stark mit Belastung, '
+       + 'Stress und Person – niemals bis zum errechneten Ende ausreizen.</div>'
+       + '</div>';
+  }
+
+  if(rechnerReiter === "wasser"){
+    h += '<div class="karte"><h2>Wasserbedarf & Tankreichweite</h2>'
+       + '<div class="feld"><label>Strahlrohr</label><select id="w-rohr">'
+       + STRAHLROHRE.map((s,i) => '<option value="' + s.lmin + '"' + (i===0?" selected":"") + '>' + s.name + ' – ' + s.lmin + ' l/min</option>').join("")
+       + '</select></div>'
+       + '<div class="feld-paar">'
+       + '<div class="feld"><label>Anzahl Rohre</label><input type="number" id="w-anzahl" value="2" min="1" step="1"></div>'
+       + '<div class="feld"><label>Tankinhalt (l)</label><input type="number" id="w-tank" value="2000" min="0" step="100"></div>'
+       + '</div>'
+       + '<div id="w-ergebnis"></div>'
+       + '<div class="hilfetext">Richtwerte bei 5 bar Strahlrohrdruck. Bei Hohlstrahlrohren zählt die eingestellte Durchflussmenge.</div>'
+       + '</div>';
+  }
+
+  if(rechnerReiter === "schaum"){
+    h += '<div class="karte"><h2>Schaummittelbedarf</h2>'
+       + '<div class="feld-paar">'
+       + '<div class="feld"><label>Wasserdurchfluss (l/min)</label><input type="number" id="s-q" value="200" min="0" step="50"></div>'
+       + '<div class="feld"><label>Zumischrate (%)</label><select id="s-rate">'
+       + '<option value="0.5">0,5 %</option><option value="1">1 %</option>'
+       + '<option value="3" selected>3 %</option><option value="6">6 %</option>'
+       + '</select></div>'
+       + '</div>'
+       + '<div class="feld"><label>Schaummittelvorrat (l)</label><input type="number" id="s-vorrat" value="200" min="0" step="20"></div>'
+       + '<div id="s-ergebnis"></div>'
+       + '<div class="hilfetext">Verschäumungszahl: Schwerschaum bis 20, Mittelschaum 20–200, Leichtschaum über 200.</div>'
+       + '</div>';
+  }
+  return h;
+}
+
+function rechne(){
+  const num = sel => { const el = $(sel); return el ? parseFloat(el.value.replace(",", ".")) : NaN; };
+
+  if(rechnerReiter === "druckverlust" && $("#r-ergebnis")){
+    const s = SCHLAEUCHE.find(x => x.id === $("#r-schlauch").value) || SCHLAEUCHE[1];
+    const L = num("#r-laenge") || 0, Q = num("#r-q") || 0;
+    const hoehe = num("#r-hoehe") || 0, sd = num("#r-sd") || 0;
+    const verlust = s.k * Math.pow(Q/100, 2) * (L/100);
+    const hoehenDruck = hoehe / 10;
+    const pumpe = sd + verlust + hoehenDruck;
+    $("#r-ergebnis").innerHTML =
+        '<div class="ergebnis"><div class="gross">' + zahl(pumpe,1) + ' bar</div>'
+      + '<div style="font-size:12.5px;color:var(--text-schwach);margin-top:2px">Ausgangsdruck an der Pumpe</div>'
+      + '<div class="zeile"><span>Strahlrohrdruck</span><span>' + zahl(sd,1) + ' bar</span></div>'
+      + '<div class="zeile"><span>Reibungsverlust ' + L + ' m</span><span>' + zahl(verlust,1) + ' bar</span></div>'
+      + '<div class="zeile"><span>Höhendifferenz ' + hoehe + ' m</span><span>' + zahl(hoehenDruck,1) + ' bar</span></div>'
+      + '</div>';
+  }
+
+  if(rechnerReiter === "luft" && $("#l-ergebnis")){
+    const vol = num("#l-vol"), druck = num("#l-druck") || 0;
+    const reserve = num("#l-reserve") || 0, amv = num("#l-amv");
+    const nutzbar = Math.max(0, (druck - reserve)) * vol;
+    const minuten = amv > 0 ? nutzbar / amv : 0;
+    $("#l-ergebnis").innerHTML =
+        '<div class="ergebnis"><div class="gross">' + Math.floor(minuten) + ' min</div>'
+      + '<div style="font-size:12.5px;color:var(--text-schwach);margin-top:2px">bis zum Reservedruck – Rückweg abziehen!</div>'
+      + '<div class="zeile"><span>Nutzbarer Vorrat</span><span>' + Math.round(nutzbar) + ' l</span></div>'
+      + '<div class="zeile"><span>Gesamtvorrat bei ' + druck + ' bar</span><span>' + Math.round(druck*vol) + ' l</span></div>'
+      + '<div class="zeile"><span>Halbe Zeit (Umkehrpunkt)</span><span>' + Math.floor(minuten/2) + ' min</span></div>'
+      + '</div>';
+  }
+
+  if(rechnerReiter === "wasser" && $("#w-ergebnis")){
+    const proRohr = num("#w-rohr"), anzahl = num("#w-anzahl") || 0, tank = num("#w-tank") || 0;
+    const gesamt = proRohr * anzahl;
+    const minuten = gesamt > 0 ? tank / gesamt : 0;
+    $("#w-ergebnis").innerHTML =
+        '<div class="ergebnis"><div class="gross">' + Math.round(gesamt) + ' l/min</div>'
+      + '<div style="font-size:12.5px;color:var(--text-schwach);margin-top:2px">Gesamtbedarf</div>'
+      + '<div class="zeile"><span>Tank reicht</span><span>' + zahl(minuten,1) + ' min</span></div>'
+      + '<div class="zeile"><span>Bedarf je 10 min</span><span>' + Math.round(gesamt*10) + ' l</span></div>'
+      + '</div>';
+  }
+
+  if(rechnerReiter === "schaum" && $("#s-ergebnis")){
+    const Q = num("#s-q") || 0, rate = num("#s-rate"), vorrat = num("#s-vorrat") || 0;
+    const proMin = Q * rate / 100;
+    const minuten = proMin > 0 ? vorrat / proMin : 0;
+    $("#s-ergebnis").innerHTML =
+        '<div class="ergebnis"><div class="gross">' + zahl(proMin,1) + ' l/min</div>'
+      + '<div style="font-size:12.5px;color:var(--text-schwach);margin-top:2px">Schaummittelverbrauch</div>'
+      + '<div class="zeile"><span>Vorrat reicht</span><span>' + zahl(minuten,1) + ' min</span></div>'
+      + '<div class="zeile"><span>Bedarf für 20 min</span><span>' + Math.round(proMin*20) + ' l</span></div>'
+      + '</div>';
+  }
+}
+
+/* --- Daten & Einsatz --- */
+
+function ansichtDaten(){
+  const e = daten.einsatz;
+  let h = "";
+
+  h += '<div class="karte"><h2>Aktueller Einsatz</h2>';
+  if(e){
+    h += '<div style="font-size:17px;font-weight:700">' + esc(e.stichwort || "Einsatz") + '</div>'
+       + '<div style="color:var(--text-schwach);font-size:13.5px;margin-top:3px">'
+       + (e.ort ? esc(e.ort) + ' · ' : '') + 'Beginn ' + datumZeit(e.start) + '</div>'
+       + '<div class="chips" style="margin-top:9px">'
+       + '<span class="chip gruen">' + dauer((jetzt()-e.start)/1000) + ' Laufzeit</span>'
+       + '<span class="chip">' + aktiveTrupps().length + ' Trupps im Einsatz</span>'
+       + '<span class="chip">' + daten.tagebuch.length + ' Einträge</span>'
+       + '</div>';
+  }else{
+    h += '<div class="leer"><strong>Kein Einsatz aktiv</strong>Oben rechts starten – dann läuft die Einsatzuhr im Kopf mit.</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="karte"><h2>Sichern & Weitergeben</h2><div class="btn-reihe">'
+     + '<button class="btn" data-tun="export-json">💾 Backup (JSON)</button>'
+     + '<button class="btn" data-tun="export-txt">📄 Bericht (TXT)</button>'
+     + '<button class="btn" data-tun="drucken">🖨 Drucken / PDF</button>'
+     + '</div>'
+     + '<div class="hilfetext">Alle Daten liegen ausschließlich lokal in diesem Browser – nichts wird hochgeladen. '
+     + 'Browserdaten löschen heißt: Einsatzdaten weg. Nach dem Einsatz Bericht sichern.</div></div>';
+
+  if(daten.archiv.length){
+    h += '<div class="karte"><h2>Abgeschlossene Einsätze <span class="zahl">' + daten.archiv.length + '</span></h2>';
+    daten.archiv.slice().reverse().forEach(a => {
+      h += '<div style="padding:9px 0;border-top:1px solid var(--rand);display:flex;gap:10px;align-items:center">'
+         + '<div style="flex:1"><b>' + esc(a.stichwort || "Einsatz") + '</b>'
+         + '<div style="font-size:12.5px;color:var(--text-schwach)">' + datumZeit(a.start)
+         + ' · ' + Math.round((a.ende-a.start)/60000) + ' min · ' + (a.trupps||[]).length + ' Trupps</div></div>'
+         + '<button class="btn klein" data-tun="archiv-txt" data-id="' + a.id + '">TXT</button>'
+         + '</div>';
+    });
+    h += '</div>';
+  }
+
+  h += '<div class="karte"><h2>Tipps</h2>'
+     + '<div style="font-size:13.5px;line-height:1.6;color:var(--text-schwach)">'
+     + '📱 <b>Auf den Startbildschirm legen:</b> im Browser „Teilen“ → „Zum Home-Bildschirm“. '
+     + 'Dann startet die App wie eine normale App und funktioniert ohne Netz.<br><br>'
+     + '🔋 <b>Display an lassen:</b> Für die Atemschutzüberwachung sollte das Gerät nicht in den Ruhezustand gehen.<br><br>'
+     + '👤 <b>Ein Gerät, eine Aufgabe:</b> Die Überwachung gehört auf ein Gerät, das nur dafür da ist.'
+     + '</div></div>';
+
+  h += '<div class="karte"><h2>Zurücksetzen</h2>'
+     + '<button class="btn gefahr breit" data-tun="alles-loeschen">Alle Daten unwiderruflich löschen</button></div>';
+  return h;
+}
+
+/* ------------------------------ Dialoge ------------------------------ */
+
+function dialog(titel, koerper, aktionen){
+  const halter = $("#dialog-halter");
+  halter.innerHTML =
+      '<div class="overlay" data-tun="overlay"><div class="dialog">'
+    + '<h3>' + esc(titel) + '</h3>' + koerper
+    + '<div class="btn-reihe" style="margin-top:16px">' + aktionen + '</div>'
+    + '</div></div>';
+  const ersteEingabe = halter.querySelector("input,textarea,select");
+  if(ersteEingabe) setTimeout(() => { ersteEingabe.focus(); ersteEingabe.select && ersteEingabe.select(); }, 60);
+}
+
+function dialogZu(){ $("#dialog-halter").innerHTML = ""; }
+const dialogOffen = () => $("#dialog-halter").children.length > 0;
+
+function dialogTruppNeu(){
+  const nr = daten.trupps.length + 1;
+  dialog("Trupp unter Atemschutz",
+      '<div class="feld"><label>Truppbezeichnung</label>'
+    + '<input type="text" id="d-name" value="Angriffstrupp ' + nr + '"></div>'
+    + '<div class="feld"><label>Namen (mit Komma trennen)</label>'
+    + '<input type="text" id="d-leute" placeholder="Truppführer, Truppmann"></div>'
+    + '<div class="feld-paar">'
+    + '<div class="feld"><label>Startdruck (bar)</label><input type="number" id="d-druck" value="300" min="0" step="10"></div>'
+    + '<div class="feld"><label>Auftrag</label><input type="text" id="d-auftrag" placeholder="z. B. Menschenrettung"></div>'
+    + '</div>',
+      '<button class="btn" data-tun="dialog-zu">Abbrechen</button>'
+    + '<button class="btn primaer" data-tun="trupp-speichern" style="flex:1">Einsatz beginnt jetzt</button>');
+}
+
+function dialogDruck(t){
+  dialog("Druck melden – " + t.name,
+      '<div class="feld"><label>Gemeldeter Druck (bar)</label>'
+    + '<input type="number" id="d-druck" value="' + letzterDruck(t) + '" min="0" step="10" inputmode="numeric"></div>'
+    + '<div style="font-size:13px;color:var(--text-schwach)">Rückzugsdruck: <b>' + rueckzugsdruck(t)
+    + ' bar</b> · letzte Kontrolle ' + uhrzeit(letzteKontrolleMs(t)) + '</div>',
+      '<button class="btn" data-tun="dialog-zu">Abbrechen</button>'
+    + '<button class="btn primaer" data-tun="druck-speichern" data-id="' + t.id + '" style="flex:1">Eintragen</button>');
+}
+
+function dialogZiel(t){
+  dialog("Einsatzziel erreicht – " + t.name,
+      '<div class="feld"><label>Druck am Einsatzziel (bar)</label>'
+    + '<input type="number" id="d-druck" value="' + letzterDruck(t) + '" min="0" step="10" inputmode="numeric"></div>'
+    + '<div style="font-size:13px;color:var(--text-schwach)">Daraus wird der Rückzugsdruck berechnet: '
+    + 'doppelter Anmarschverbrauch + ' + (WARNPFIFF_BAR + 10) + ' bar Sicherheit.</div>',
+      '<button class="btn" data-tun="dialog-zu">Abbrechen</button>'
+    + '<button class="btn primaer" data-tun="ziel-speichern" data-id="' + t.id + '" style="flex:1">Übernehmen</button>');
+}
+
+function dialogNotiz(t){
+  dialog("Notiz zu " + t.name,
+      '<div class="feld"><textarea id="d-text" rows="3" placeholder="Meldung des Trupps …"></textarea></div>',
+      '<button class="btn" data-tun="dialog-zu">Abbrechen</button>'
+    + '<button class="btn primaer" data-tun="notiz-speichern" data-id="' + t.id + '" style="flex:1">Ins Tagebuch</button>');
+}
+
+function dialogZurueck(t){
+  dialog("Trupp zurück – " + t.name,
+      '<div class="feld"><label>Restdruck bei Rückkehr (bar)</label>'
+    + '<input type="number" id="d-druck" value="' + letzterDruck(t) + '" min="0" step="10" inputmode="numeric"></div>'
+    + '<div style="font-size:13px;color:var(--text-schwach)">Einsatzzeit: '
+    + dauer((jetzt()-t.start)/1000) + '</div>',
+      '<button class="btn" data-tun="dialog-zu">Abbrechen</button>'
+    + '<button class="btn primaer" data-tun="zurueck-speichern" data-id="' + t.id + '" style="flex:1">Trupp ist zurück</button>');
+}
+
+function dialogEinsatzStart(){
+  dialog("Einsatz starten",
+      '<div class="feld"><label>Einsatzstichwort</label>'
+    + '<input type="text" id="d-stichwort" placeholder="z. B. B2 Zimmerbrand"></div>'
+    + '<div class="feld"><label>Einsatzort</label>'
+    + '<input type="text" id="d-ort" placeholder="Straße, Ort"></div>',
+      '<button class="btn" data-tun="dialog-zu">Abbrechen</button>'
+    + '<button class="btn primaer" data-tun="einsatz-start" style="flex:1">Uhr starten</button>');
+}
+
+/* ------------------------------ Export ------------------------------ */
+
+function berichtText(e, trupps, tagebuch){
+  const z = [];
+  z.push("EINSATZBERICHT");
+  z.push("=".repeat(46));
+  if(e){
+    z.push("Stichwort : " + (e.stichwort || "-"));
+    z.push("Ort       : " + (e.ort || "-"));
+    z.push("Beginn    : " + datumZeit(e.start));
+    if(e.ende) z.push("Ende      : " + datumZeit(e.ende)
+                    + "  (" + Math.round((e.ende-e.start)/60000) + " min)");
+  }
+  z.push("");
+  z.push("ATEMSCHUTZEINSÄTZE");
+  z.push("-".repeat(46));
+  if(!trupps.length) z.push("keine");
+  trupps.forEach(t => {
+    z.push((t.name || "Trupp") + " – " + (t.leute||[]).join(", "));
+    z.push("  Auftrag       : " + (t.auftrag || "-"));
+    z.push("  Einstieg      : " + uhrzeitSek(t.start) + " mit " + t.startdruck + " bar");
+    if(t.zieldruck != null) z.push("  Am Ziel       : " + t.zieldruck + " bar");
+    z.push("  Rückzugsdruck : " + rueckzugsdruck(t) + " bar");
+    (t.kontrollen||[]).forEach(k => z.push("  Kontrolle     : " + uhrzeitSek(k.t) + "  " + k.druck + " bar"));
+    if(t.ende) z.push("  Rückkehr      : " + uhrzeitSek(t.ende) + " mit " + letzterDruck(t) + " bar ("
+                    + Math.round((t.ende-t.start)/60000) + " min)");
+    else z.push("  Rückkehr      : noch im Einsatz");
+    z.push("");
+  });
+  z.push("EINSATZTAGEBUCH");
+  z.push("-".repeat(46));
+  if(!tagebuch.length) z.push("keine Einträge");
+  tagebuch.forEach(t => z.push(uhrzeitSek(t.t) + "  [" + t.kat + "] " + t.text));
+  z.push("");
+  z.push("Erstellt mit Einsatz-Helfer am " + datumZeit(jetzt()));
+  return z.join("\n");
+}
+
+function dateiSpeichern(name, inhalt, typ){
+  const blob = new Blob([inhalt], { type: typ + ";charset=utf-8" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+function stempel(){
+  const d = new Date();
+  const zz = n => String(n).padStart(2,"0");
+  return d.getFullYear() + zz(d.getMonth()+1) + zz(d.getDate()) + "-" + zz(d.getHours()) + zz(d.getMinutes());
+}
+
+/* ------------------------------ Aktionen ------------------------------ */
+
+const AKTIONEN = {
+
+  "dialog-zu": dialogZu,
+  "overlay": (el, ev) => { if(ev.target.classList.contains("overlay")) dialogZu(); },
+
+  "trupp-neu": dialogTruppNeu,
+
+  "trupp-speichern": () => {
+    const druck = parseInt($("#d-druck").value, 10);
+    if(!isFinite(druck) || druck <= 0){ melde("Bitte gültigen Startdruck eintragen"); return; }
+    const t = {
+      id: neueId(),
+      name: ($("#d-name").value || "Trupp").trim(),
+      leute: $("#d-leute").value.split(",").map(s => s.trim()).filter(Boolean),
+      auftrag: $("#d-auftrag").value.trim(),
+      startdruck: druck,
+      zieldruck: null,
+      start: jetzt(),
+      ende: null,
+      kontrollen: []
+    };
+    daten.trupps.push(t);
+    protokoll(t.name + " unter Atemschutz vor – " + druck + " bar"
+              + (t.auftrag ? " – Auftrag: " + t.auftrag : ""), "Atemschutz");
+    sichern(); dialogZu(); zeichne();
+    melde("Uhr läuft für " + t.name);
+  },
+
+  "druck": (el) => { const t = finde(el.dataset.id); if(t) dialogDruck(t); },
+
+  "druck-speichern": (el) => {
+    const t = finde(el.dataset.id); if(!t) return;
+    const d = parseInt($("#d-druck").value, 10);
+    if(!isFinite(d) || d < 0){ melde("Bitte gültigen Druck eintragen"); return; }
+    t.kontrollen.push({ t: jetzt(), druck: d });
+    protokoll(t.name + ": Druckkontrolle " + d + " bar", "Atemschutz");
+    sichern(); dialogZu(); zeichne();
+    if(d <= rueckzugsdruck(t)) melde("⚠️ Rückzugsdruck erreicht – Trupp zurück!");
+  },
+
+  "ziel": (el) => { const t = finde(el.dataset.id); if(t) dialogZiel(t); },
+
+  "ziel-speichern": (el) => {
+    const t = finde(el.dataset.id); if(!t) return;
+    const d = parseInt($("#d-druck").value, 10);
+    if(!isFinite(d) || d < 0){ melde("Bitte gültigen Druck eintragen"); return; }
+    t.zieldruck = d;
+    t.kontrollen.push({ t: jetzt(), druck: d });
+    protokoll(t.name + ": Einsatzziel erreicht mit " + d + " bar – Rückzugsdruck "
+              + rueckzugsdruck(t) + " bar", "Atemschutz");
+    sichern(); dialogZu(); zeichne();
+  },
+
+  "notiz": (el) => { const t = finde(el.dataset.id); if(t) dialogNotiz(t); },
+
+  "notiz-speichern": (el) => {
+    const t = finde(el.dataset.id); if(!t) return;
+    const text = $("#d-text").value.trim();
+    if(!text){ melde("Kein Text eingegeben"); return; }
+    protokoll(t.name + ": " + text, "Meldung");
+    sichern(); dialogZu(); zeichne(); melde("Ins Tagebuch übernommen");
+  },
+
+  "zurueck": (el) => { const t = finde(el.dataset.id); if(t) dialogZurueck(t); },
+
+  "zurueck-speichern": (el) => {
+    const t = finde(el.dataset.id); if(!t) return;
+    const d = parseInt($("#d-druck").value, 10);
+    if(isFinite(d) && d >= 0) t.kontrollen.push({ t: jetzt(), druck: d });
+    t.ende = jetzt();
+    protokoll(t.name + " zurück nach " + Math.round((t.ende-t.start)/60000)
+              + " min – Restdruck " + letzterDruck(t) + " bar", "Atemschutz");
+    sichern(); dialogZu(); zeichne();
+  },
+
+  "trupp-loeschen": (el) => {
+    const t = finde(el.dataset.id); if(!t) return;
+    if(!confirm("Trupp „" + t.name + "“ wirklich aus der Überwachung entfernen?")) return;
+    daten.trupps = daten.trupps.filter(x => x.id !== t.id);
+    sichern(); zeichne();
+  },
+
+  "tb-schnell": (el) => {
+    protokoll(el.dataset.text, "Lage");
+    zeichne(); melde(el.dataset.text + " – " + uhrzeit(jetzt()));
+  },
+
+  "tb-add": () => {
+    const text = $("#tb-text").value.trim();
+    if(!text){ melde("Kein Text eingegeben"); return; }
+    protokoll(text, $("#tb-kat").value);
+    zeichne();
+  },
+
+  "tb-loeschen": (el) => {
+    daten.tagebuch = daten.tagebuch.filter(e => e.id !== el.dataset.id);
+    sichern(); zeichne();
+  },
+
+  "tb-kopieren": async () => {
+    const text = daten.tagebuch.map(e => uhrzeitSek(e.t) + "  [" + e.kat + "] " + e.text).join("\n");
+    try{ await navigator.clipboard.writeText(text); melde("Tagebuch kopiert"); }
+    catch(err){ dateiSpeichern("tagebuch-" + stempel() + ".txt", text, "text/plain"); }
+  },
+
+  "reiter": (el) => { rechnerReiter = el.dataset.id; zeichne(); rechne(); },
+
+  "drucken": () => window.print(),
+
+  "export-json": () => {
+    dateiSpeichern("einsatzhelfer-backup-" + stempel() + ".json",
+                   JSON.stringify(daten, null, 2), "application/json");
+  },
+
+  "export-txt": () => {
+    dateiSpeichern("einsatzbericht-" + stempel() + ".txt",
+                   berichtText(daten.einsatz, daten.trupps, daten.tagebuch), "text/plain");
+  },
+
+  "archiv-txt": (el) => {
+    const a = daten.archiv.find(x => x.id === el.dataset.id); if(!a) return;
+    dateiSpeichern("einsatzbericht-" + stempel() + ".txt",
+                   berichtText(a, a.trupps || [], a.tagebuch || []), "text/plain");
+  },
+
+  "alles-loeschen": () => {
+    if(!confirm("Wirklich ALLE Daten löschen? Auch das Archiv. Das lässt sich nicht rückgängig machen.")) return;
+    daten = leereDaten(); sichern(); zeichne(); melde("Alles gelöscht");
+  },
+
+  "einsatz-start": () => {
+    daten.einsatz = {
+      id: neueId(),
+      stichwort: $("#d-stichwort").value.trim(),
+      ort: $("#d-ort").value.trim(),
+      start: jetzt(),
+      ende: null
+    };
+    protokoll("Einsatzbeginn" + (daten.einsatz.stichwort ? " – " + daten.einsatz.stichwort : ""), "Lage");
+    sichern(); dialogZu(); zeichne(); melde("Einsatzuhr läuft");
+  },
+};
+
+function finde(id){ return daten.trupps.find(t => t.id === id); }
+
+function einsatzBeenden(){
+  const offen = aktiveTrupps().length;
+  if(offen > 0 && !confirm(offen + " Trupp(s) sind noch im Einsatz. Einsatz trotzdem beenden?")) return;
+  if(!confirm("Einsatz beenden? Trupps und Tagebuch wandern ins Archiv.")) return;
+  protokoll("Einsatzende", "Lage");
+  const a = Object.assign({}, daten.einsatz, {
+    ende: jetzt(),
+    trupps: daten.trupps,
+    tagebuch: daten.tagebuch
+  });
+  if(!a.id) a.id = neueId();
+  if(!a.start) a.start = daten.tagebuch.length ? daten.tagebuch[0].t : jetzt();
+  daten.archiv.push(a);
+  daten.einsatz = null; daten.trupps = []; daten.tagebuch = [];
+  sichern(); zeichne();
+  melde("Einsatz archiviert – Bericht unter „Daten“");
+}
+
+/* ------------------------------ Verdrahtung ------------------------------ */
+
+document.addEventListener("click", ev => {
+  const el = ev.target.closest("[data-tun]");
+  if(!el) return;
+  const fn = AKTIONEN[el.dataset.tun];
+  if(fn){ ev.preventDefault(); fn(el, ev); }
+});
+
+document.querySelectorAll("nav button").forEach(b => {
+  b.addEventListener("click", () => {
+    ansicht = b.dataset.ansicht;
+    zeichne();
+    if(ansicht === "rechner") rechne();
+    window.scrollTo(0,0);
+  });
+});
+
+$("#btn-kopf").addEventListener("click", () => {
+  if(daten.einsatz) einsatzBeenden();
+  else dialogEinsatzStart();
+});
+
+/* Rechner reagiert direkt auf jede Eingabe. */
+document.addEventListener("input", ev => {
+  if(ansicht === "rechner" && ev.target.closest("main")) rechne();
+});
+document.addEventListener("change", ev => {
+  if(ansicht === "rechner" && ev.target.closest("main")) rechne();
+});
+
+/* Enter im Dialog loest die Hauptaktion aus. */
+document.addEventListener("keydown", ev => {
+  if(ev.key === "Escape" && dialogOffen()) dialogZu();
+  if(ev.key === "Enter" && dialogOffen() && ev.target.tagName !== "TEXTAREA"){
+    const btn = $("#dialog-halter .btn.primaer");
+    if(btn){ ev.preventDefault(); btn.click(); }
+  }
+});
+
+/* Sekundentakt: nur neu zeichnen, wenn kein Dialog offen ist und es etwas zu
+   aktualisieren gibt – sonst gingen Eingaben verloren. */
+let alarmZuletzt = 0;
+function takt(){
+  const laufend = aktiveTrupps();
+
+  if(!dialogOffen() && (ansicht === "atemschutz" || daten.einsatz)){
+    if(ansicht === "atemschutz" || ansicht === "daten") zeichne();
+    else if(daten.einsatz){
+      $("#kopf-sub").textContent = (daten.einsatz.stichwort || "Einsatz")
+        + " · " + dauer((jetzt() - daten.einsatz.start)/1000);
+    }
+  }
+
+  /* Akustischer Hinweis, wenn ein Trupp im roten Bereich ist – hoechstens alle 20 s. */
+  const rot = laufend.some(t => stufe(t) === "rot");
+  if(rot && jetzt() - alarmZuletzt > 20000){ alarmZuletzt = jetzt(); piep(); }
+  if(!rot) alarmZuletzt = 0;
+}
+
+/* Bildschirm waehrend der Ueberwachung wach halten, falls der Browser das kann. */
+let wachschloss = null;
+async function bildschirmWach(){
+  try{
+    if("wakeLock" in navigator && aktiveTrupps().length && !wachschloss){
+      wachschloss = await navigator.wakeLock.request("screen");
+      wachschloss.addEventListener("release", () => { wachschloss = null; });
+    }else if(wachschloss && !aktiveTrupps().length){
+      await wachschloss.release(); wachschloss = null;
+    }
+  }catch(e){ /* nicht unterstuetzt – kein Problem */ }
+}
+document.addEventListener("visibilitychange", () => {
+  if(document.visibilityState === "visible"){ wachschloss = null; bildschirmWach(); zeichne(); }
+});
+
+zeichne();
+rechne();
+uhrLaeuft = setInterval(() => { takt(); bildschirmWach(); }, 1000);
+</script>
+</body>
+</html>
