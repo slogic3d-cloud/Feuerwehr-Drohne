@@ -4,225 +4,218 @@ Was in welcher Reihenfolge zu tun ist, damit aus dem Code ein Gerät wird, das
 im Einsatz wirklich hilft. Das **Warum** und die technischen Begründungen
 stehen in [KONZEPT.md](KONZEPT.md) — hier steht das **Was, wann und womit**.
 
-**Stand heute:** Software fertig und getestet (84 Tests, läuft im
-Simulationsmodus). Hardware: nichts gekauft.
+**Stand:** Software fertig und getestet (84 Tests, läuft im Simulationsmodus).
+Hardware: nichts gekauft — und das bleibt bis Phase B auch so.
 
 ---
 
-## Die Grundregel des Plans
+## Die Reihenfolge
 
-> **Erst muss die Erkennung am Boden funktionieren, dann wird geflogen.**
+> **Erst alles, was ohne Hardware geht. Dann eine einzige Bestellung.**
 
-Der Grund ist unbequem, aber wichtig: Wenn du zuerst die Drohne baust und die
-Erkennung erst in der Luft ausprobierst, weißt du bei jedem Fehlschlag nicht,
-ob es an der Kamera, an den Schwellen, an der Höhe, an den Vibrationen oder am
-Wetter lag. Und jeder Testflug kostet Akku, Zeit und irgendwann Hardware.
+Das hat einen handfesten Vorteil: Wenn die Teile ankommen, kannst du schon
+fliegen (im Simulator geübt), hast den Kompetenznachweis in der Tasche, die
+Halter fertig konstruiert und weißt, wo du üben darfst. Statt monatelang
+zwischen Warten und Basteln zu pendeln, baust du in ein, zwei Wochenenden
+durch.
 
-Ein Aufbau, den du in der Hand über die Wiese trägst, kostet 260 € und
-beantwortet die entscheidende Frage: **Erkennt das Ding einen Menschen?**
-Wenn nicht, hast du 260 € statt 700 € ausgegeben.
+**Der Preis dafür, ehrlich gesagt:** Du legst rund 700 € auf einmal hin,
+bevor bewiesen ist, dass die Wärmebilderkennung mit *deiner* Kamera auf
+*deinen* Wiesen funktioniert. Das ist ein bewusst eingegangenes Risiko. Es
+lässt sich kleinhalten: Kamera und Pi zuerst auspacken und die Bodenmessreihe
+(Schritt C1) machen, **bevor** ein einziges Kabel an der Flugzelle gelötet
+wird. Geht dort etwas schief, kannst du den Rest der Teile noch zurückgeben.
 
 ---
 
-## Etappe 0 — Heute Abend, ohne einen Cent
+# Phase A — Alles ohne Hardware
 
-**Zeit:** 30 Minuten
+**Zeit:** so lange du brauchst · **Kosten:** 0 €
 
-- [ ] Simulation starten und die Bodenstation ansehen
+## A1 — Software zum Laufen bringen
+
+- [ ] Python 3 installieren, falls noch nicht vorhanden
+      ([python.org](https://www.python.org/downloads/) — unter Windows beim
+      Installieren **„Add python.exe to PATH" ankreuzen**)
+- [ ] Simulation starten:
       ```bash
-      cd sensor && python3 suchkopf.py
+      cd sensor
+      python3 suchkopf.py      # Windows: py suchkopf.py
       ```
-      Dann `http://localhost:8080/` im Browser öffnen.
-- [ ] Tests laufen lassen: `cd tests && python3 -m unittest discover -s .`
-- [ ] [KONZEPT.md](KONZEPT.md) lesen — **besonders Abschnitt 2 (die ehrlichen
-      Grenzen) und Abschnitt 8 (Recht)**
-- [ ] Für dich klären: Hast du schon eine RC-Fernsteuerung und ein
-      LiPo-Ladegerät? Das entscheidet, ob das Projekt 600 € oder 715 € kostet.
+      Dann `http://localhost:8080/` im Browser öffnen
+- [ ] Tests laufen lassen:
+      ```bash
+      cd tests
+      python3 -m unittest discover -s .
+      ```
+- [ ] Mit der Oberfläche spielen: Farbskala umschalten, Fundstelle als
+      „Person" und als „Fehlalarm" markieren, Koordinate kopieren
+- [ ] In `sensor/konfig.py` an den Schwellen drehen und zusehen, was passiert —
+      das ist die beste Art, das Verfahren zu verstehen
 
-**Fertig, wenn:** Du das Wärmebild im Browser gesehen hast und dir klar ist,
-was das Gerät kann — und was es nicht kann.
+**Fertig, wenn:** Du das Wärmebild im Browser gesehen hast und weißt, wo du
+etwas verstellst.
+
+## A2 — Fliegen lernen, bevor teure Teile da sind
+
+Das ist der Punkt, an dem sonst Geld kaputtgeht. Ein Simulator kostet 20–30 €
+oder nichts und spart erfahrungsgemäß mindestens einen Satz Propeller, oft
+mehr.
+
+- [ ] Simulator einrichten (ArduPilot SITL ist kostenlos; für Flugpraxis sind
+      Liftoff oder Velocidrone realistischer) und den Gamepad anlernen
+- [ ] Schweben üben, bis es langweilig wird
+- [ ] Koordinierte Kurven, Bahnen abfliegen, Landen
+- [ ] Notfälle üben: Orientierung verloren, Drohne kommt auf dich zu
+
+**Fertig, wenn:** Du eine Bahn geradeaus abfliegen und sauber landen kannst,
+ohne zu überlegen.
+
+## A3 — Papiere, die Zeit brauchen
+
+- [ ] **Kompetenznachweis A1/A3** beim Luftfahrt-Bundesamt — Online-Test,
+      kostenlos, ein Nachmittag
+- [ ] Betreiberregistrierung beim LBA (e-ID) — die Nummer kommt später aufs Gerät
+- [ ] Versicherungsfrage klären: private Drohnenversicherung deckt
+      Einsatzflüge in der Regel **nicht**
+
+## A4 — Konstruktion
+
+- [ ] Maße der Kamera und des Pi aus den Datenblättern holen
+- [ ] Halter konstruieren: Kamera senkrecht nach unten, Pi daneben,
+      Kabelführung, Vibrationsdämpfung
+- [ ] Probedrucke in ABS oder ABS-CF — auch um herauszufinden, ob dein Drucker
+      ABS überhaupt sauber hinbekommt (ohne geschlossene Kammer zieht es sich
+      krumm; dann PETG nehmen und auf die 80 °C verzichten)
+
+## A5 — Rahmenbedingungen klären
+
+- [ ] **Übungsgelände:** Für A3 brauchst du 150 m Abstand zu Wohn- und
+      Gewerbegebieten. Feld hinter dem Ort? Modellflugplatz? Einen Landwirt
+      fragen?
+- [ ] Bei der Kreisbrandinspektion vorfühlen: Ist so ein Projekt erwünscht?
+      Wer müsste zustimmen?
+- [ ] Einen zweiten Mann suchen — ein Gerät, das nur einer bedienen kann, ist
+      im Einsatz nicht verfügbar
+
+## A6 — Bestellung vorbereiten
+
+- [ ] Bauteilliste aus [KONZEPT.md](KONZEPT.md) Abschnitt 5 durchgehen
+- [ ] Preise und Verfügbarkeit prüfen, möglichst wenige Händler
+- [ ] Prüfen, was du schon hast: RC-Sender? Ladegerät? Lötstation?
+      Schrumpfschlauch, XT60-Stecker, Silikonlitze?
+- [ ] Verbrauchsmaterial nicht vergessen: Ersatzpropeller, Ersatzarme,
+      Kabelbinder, Klettband, Schraubensicherung
 
 ---
 
-## Etappe 1 — Erkennung am Boden beweisen
+# Phase B — Die eine Bestellung
 
-**Zeit:** 2 Wochenenden · **Kosten:** 260 € · **Das ist der wichtigste Schritt**
+**Kosten:** rund 600 € (mit Sender und Ladegerät 715 €)
 
-### Einkaufen
+| Bereich | Inhalt | Betrag |
+|---|---|---:|
+| Nutzlast | InfiRay P2 Pro / Topdon TC001, Pi Zero 2 W + SD + OTG-Adapter | 260 € |
+| Zelle | Rahmen 7", 4× Motor 2807, 4-in-1-Regler, F405-Stack, Propeller, GPS M10, ELRS-Empfänger | 235 € |
+| Energie | Li-Ion 6S2P | 90 € |
+| Kleinteile | BEC 5 V/3 A, Stecker, Litze, Klettband | 15 € |
+| falls nötig | RC-Sender 70 €, Ladegerät 45 € | 115 € |
 
-| Teil | Preis |
-|---|---:|
-| InfiRay P2 Pro oder Topdon TC001 (256×192, USB-C) | 230 € |
-| Raspberry Pi Zero 2 W + SD-Karte + OTG-Adapter | 30 € |
+---
 
-### Aufgaben
+# Phase C — Aufbau
 
-- [ ] **1.1** Raspberry Pi OS Lite (64 Bit) auf die Karte, WLAN und SSH schon
-      beim Schreiben eintragen — der Pi Zero hat keinen brauchbaren
-      Bildschirmanschluss für nebenbei
-- [ ] **1.2** Repo auf den Pi holen, `sudo apt install python3-opencv`
+## C1 — Zuerst die Kamera, noch bevor gelötet wird
+
+**Das ist der Test, der über alles entscheidet — und der einzige, nach dem du
+den Rest noch zurückschicken kannst.**
+
+- [ ] Raspberry Pi OS Lite (64 Bit) aufspielen, WLAN und SSH schon beim
+      Schreiben der Karte eintragen
+- [ ] Repo auf den Pi holen, `sudo apt install python3-opencv`
       (nur der Kameratreiber braucht das)
-- [ ] **1.3** Kamera über den OTG-Adapter anstecken, prüfen ob sie als
-      `/dev/video0` auftaucht (`v4l2-ctl --list-devices`)
-- [ ] **1.4** Erster echter Lauf:
+- [ ] Kamera über OTG anstecken, prüfen: `v4l2-ctl --list-devices`
+- [ ] Erster echter Lauf:
       ```bash
       WAERMEBILD_TYP=infiray python3 suchkopf.py
       ```
-      Vom Handy aus `http://<Pi-Adresse>:8080/` öffnen
-- [ ] **1.5** **Messreihe im Garten:** Jemand legt sich hin, du hältst die
-      Kamera aus 3, 5, 10 und 15 m Abstand drauf. Notieren: Welche Abhebung in
-      Kelvin zeigt die Bodenstation? Wie viele Zellen hat der Fleck?
-- [ ] **1.6** Schwellen in `sensor/konfig.py` nachziehen — vor allem
-      `ABHEBUNG_K`, wenn dein Untergrund wärmer oder kälter ist als angenommen
-- [ ] **1.7** Dasselbe **nachts** wiederholen. Der Unterschied wird dich
-      überraschen — nachts ist alles viel deutlicher.
-- [ ] **1.8** Optional: einen einfachen Handgriff mit Kamerahalter drucken,
-      dann lässt sich bequemer messen
+- [ ] **Messreihe:** Jemand legt sich hin, Kamera aus 3, 5, 10 und 15 m
+      draufhalten. Notieren: Abhebung in Kelvin, Zellen je Fleck
+- [ ] Dasselbe **nachts** — der Unterschied wird dich überraschen
+- [ ] Schwellen in `sensor/konfig.py` nachziehen, vor allem `ABHEBUNG_K`
 
-**Fertig, wenn:** Eine auf der Wiese liegende Person nachts zuverlässig als
-Treffer gemeldet wird und ein Heizkörper oder eine Motorhaube nicht.
+**Fertig, wenn:** Eine nachts auf der Wiese liegende Person zuverlässig als
+Treffer gemeldet wird und ein Heizkörper nicht.
 
-**Wenn es klemmt:** Die P2-Pro-Familie meldet sich als UVC-Kamera, aber nicht
-alle Modelle liefern die Temperaturhälfte gleich. Wenn `WAERMEBILD_TYP=infiray`
-nur Grütze zeigt: einmal das Rohformat prüfen (`v4l2-ctl --list-formats-ext`),
-dann melden — der Treiber in `sensor/geraete/waermebild.py` ist eine
-überschaubare Funktion, die sich anpassen lässt. Der Pi Zero 2 W ist bei
-25 Bildern je Sekunde am Limit; deshalb läuft der Suchkopf mit 8 Hz. Reicht
-das nicht, ist ein Pi 4 der Ausweg (+ 40 g, + 50 €).
+## C2 — Flugzelle
 
----
+- [ ] Aufbauen und löten
+- [ ] ArduPilot flashen, Rahmentyp, Motorreihenfolge, Drehrichtungen
+- [ ] Kalibrieren: Beschleunigungsmesser, Kompass, Regler, Funk, Akku
+- [ ] **Failsafes setzen** — Rückkehr zum Startpunkt bei Funkverlust,
+      Akkuwarnung, Höhenbegrenzung. Keine Fleißaufgabe.
+- [ ] Erstflug **ohne Nutzlast** auf freier Fläche
+- [ ] Zehn Akkus leerfliegen, Rückkehrfunktion und Notabschaltung ausprobieren.
+      Erst danach kommt die 230-€-Kamera ans Gerät.
 
-## Etappe 2 — Flugzelle bauen und fliegen lernen
+## C3 — Zusammenbau
 
-**Zeit:** 3–4 Wochenenden · **Kosten:** 325 € (+ 115 € falls Sender und
-Ladegerät fehlen)
-
-### Einkaufen
-
-Rahmen 7 Zoll · 4 Motoren 2807/1300 KV · 4-in-1-Regler · F405-Stack ·
-Propeller · GPS M10 · ELRS-Empfänger · Li-Ion 6S2P
-(vollständige Liste mit Preisen in [KONZEPT.md](KONZEPT.md), Abschnitt 5)
-
-### Aufgaben
-
-- [ ] **2.1** Aufbauen und löten — Motoren, Regler, Flugregler, GPS, Empfänger
-- [ ] **2.2** ArduPilot flashen und Erstkonfiguration (Rahmentyp,
-      Motorreihenfolge, Drehrichtungen)
-- [ ] **2.3** Kalibrieren: Beschleunigungsmesser, Kompass, Regler, Funk, Akku
-- [ ] **2.4** **Failsafes setzen** — das ist keine Fleißaufgabe:
-      Rückkehr zum Startpunkt bei Funkverlust, Akkuwarnung, Höhenbegrenzung
-- [ ] **2.5** Erstflug ohne Nutzlast auf freier Fläche, weit weg von allem
-- [ ] **2.6** **Zehn Akkus leerfliegen.** Schweben, Kreise, Rückkehrfunktion
-      ausprobieren, Notfallabschaltung üben. Erst danach kommt die 230-€-Kamera
-      an das Gerät.
-
-**Fertig, wenn:** Zehn Flüge ohne Schaden, die Rückkehrfunktion funktioniert
-und du dich beim Fliegen nicht mehr verkrampfst.
+- [ ] Halter montieren, Pi über BEC versorgen, Kabel gegen Vibration sichern
+- [ ] Schwerpunkt prüfen
+- [ ] **Flugzeit mit Nutzlast messen** — die echte Zahl, nicht die gerechnete
+- [ ] Im Schwebeflug das Wärmebild ansehen: scharf? Was sagt die
+      Böigkeitsanzeige? Zu viel Vibration heißt: Dämpfung unter den Halter
 
 ---
 
-## Etappe 3 — Zusammenbau
+# Phase D — Trefferquote messen
 
-**Zeit:** 1 Wochenende · **Kosten:** ca. 15 € (Druckmaterial, BEC, Kleinteile)
+**Zeit:** laufend · **Kosten:** 0 € · **Die Phase, die zählt**
 
-- [ ] **3.1** Halter für Kamera (nach unten blickend) und Pi konstruieren und
-      in ABS oder ABS-CF drucken
-- [ ] **3.2** Stromversorgung für den Pi: 5 V / 3 A BEC vom Hauptakku
-- [ ] **3.3** Montieren, Schwerpunkt prüfen, Kabel gegen Vibration sichern
-- [ ] **3.4** **Flugzeit mit Nutzlast messen** — die echte Zahl, nicht die
-      gerechnete
-- [ ] **3.5** Im Schwebeflug das Wärmebild ansehen: Ist es scharf? Was zeigt
-      die Böigkeitsanzeige? Zu viel Vibration heißt: Dämpfung unter die
-      Kamerahalterung
+Ohne diese Zahlen ist es ein Bastelprojekt. Mit ihnen ist es etwas, über das
+man mit der Wehrführung reden kann.
 
-**Fertig, wenn:** Im Flug kommt ein brauchbares Bild auf dem Tablet an und du
-kennst deine tatsächliche Flugzeit.
+- [ ] Nachts auf eine abgemähte Wiese. Ein Helfer legt sich an eine Stelle,
+      **die du nicht kennst** — jemand Drittes weist ihn ein
+- [ ] In 20, 30, 40, 50 und 60 m Höhe überfliegen. Notieren: gefunden ja/nein,
+      nach wie vielen Sekunden, welches Vertrauen
+- [ ] Jede Fundstelle am Tablet bewerten, danach `python3 lernen.py`
+- [ ] Wiederholen: Stoppelfeld, hohes Gras, Waldrand, leichter Regen, tagsüber
+- [ ] Tabelle führen: **Höhe → Trefferquote → Fehlalarme je Flug**
 
----
-
-## Etappe 4 — Trefferquote messen und Modell trainieren
-
-**Zeit:** laufend · **Kosten:** 0 € · **Das ist die Etappe, die zählt**
-
-Ohne diese Zahlen ist das Gerät ein Bastelprojekt. Mit ihnen ist es ein
-Einsatzmittel, über das man mit der Wehrführung reden kann.
-
-- [ ] **4.1** Nachts auf eine abgemähte Wiese. Ein Helfer legt sich an eine
-      Stelle, **die du nicht kennst** (jemand Drittes weist ihn ein)
-- [ ] **4.2** In 20, 30, 40, 50 und 60 m Höhe überfliegen. Notieren:
-      gefunden ja/nein, nach wie vielen Sekunden, welches Vertrauen
-- [ ] **4.3** Jede Fundstelle am Tablet als „Person" oder „Fehlalarm" bewerten
-- [ ] **4.4** Nach jedem Abend trainieren: `python3 lernen.py`
-- [ ] **4.5** Wiederholen unter anderen Bedingungen: Stoppelfeld, hohes Gras,
-      Waldrand, leichter Regen, tagsüber
-- [ ] **4.6** Eine Tabelle führen: **Höhe → Trefferquote → Fehlalarme je Flug**
-
-**Fertig, wenn:** Du den Satz sagen kannst: „Bei 40 m Höhe über abgemähter
-Wiese finde ich nachts 9 von 10 Personen, mit im Schnitt 2 Fehlalarmen je Flug."
+**Fertig, wenn:** Du den Satz sagen kannst: „Bei 40 m über abgemähter Wiese
+finde ich nachts 9 von 10 Personen, mit im Schnitt 2 Fehlalarmen je Flug."
 
 ---
 
-## Etappe 5 — Aus dem Bastelprojekt wird ein Einsatzmittel
+# Phase E — Aus dem Bastelprojekt wird ein Einsatzmittel
 
-**Zeit:** je nach Behörde · **Kosten:** gering, aber Zeit
-
-- [ ] **5.1** Kompetenznachweis A1/A3 beim Luftfahrt-Bundesamt — Online-Test,
-      kostenlos, ein Nachmittag. **Das kannst du schon in Etappe 1 machen.**
-- [ ] **5.2** Betreiberregistrierung beim LBA (e-ID), Plakette ans Gerät
-- [ ] **5.3** Dem Kommandanten vorführen — mit den Zahlen aus Etappe 4, nicht
-      mit Versprechen
-- [ ] **5.4** Über die Kreisbrandinspektion an das Luftamt Nordbayern:
-      Was braucht es für Einsatzflüge über A3 hinaus?
-- [ ] **5.5** Versicherung klären. Die private Drohnenversicherung deckt
-      Einsatzflüge in der Regel **nicht**.
-- [ ] **5.6** Einsatzablauf schriftlich festhalten (Abschnitt 7 im Konzept ist
-      der Entwurf dafür), zwei Leute einweisen — ein Gerät, das nur einer
-      bedienen kann, ist im Einsatz nicht verfügbar
+- [ ] Dem Kommandanten vorführen — mit den Zahlen aus Phase D, nicht mit
+      Versprechen
+- [ ] Über die Kreisbrandinspektion an das Luftamt Nordbayern: Was braucht es
+      für Einsatzflüge über A3 hinaus?
+- [ ] Versicherung über den kommunalen Versicherer klären
+- [ ] Einsatzablauf schriftlich festhalten (Abschnitt 7 im Konzept ist der
+      Entwurf), zwei Leute einweisen
 
 ---
 
-## Etappe 6 — Optional: LTE nachrüsten
+# Phase F — Optional: LTE nachrüsten
 
-**Zeit:** 1 Wochenende · **Kosten:** 55 € + Tarif
-
-- [ ] SIM7600-Modem an den Pi, WLAN bleibt als Rückfallebene
+- [ ] SIM7600-Modem an den Pi, WLAN bleibt Rückfallebene (55 € + Tarif)
 - [ ] Zugang absichern, bevor die Bodenstation aus dem Internet erreichbar ist
 - [ ] Damit sehen Einsatzleitung und Leitstelle das Bild live mit
 
 ---
 
-## Einkaufen in der richtigen Reihenfolge
-
-Geld erst ausgeben, wenn die vorige Etappe steht:
-
-| Wann | Was | Betrag |
-|---|---|---:|
-| jetzt | Wärmebildkamera + Pi Zero 2 W | 260 € |
-| nach Etappe 1 | Flugzelle, Akku, (Sender, Ladegerät) | 325–440 € |
-| nach Etappe 2 | BEC, Druckmaterial, Kleinteile | 15 € |
-| später | LTE-Modem | 55 € |
-
----
-
-## Was noch offen ist
-
-| Frage | Warum sie zählt |
-|---|---|
-| Hast du RC-Sender und Ladegerät? | Entscheidet über 600 € oder 715 € |
-| 3D-Drucker mit geschlossener Kammer? | ABS zieht sich sonst beim Drucken krumm — sonst PETG nehmen und auf die 80 °C verzichten |
-| Wo darfst du üben? | Für A3 brauchst du 150 m Abstand zu Wohngebieten. Feld hinter dem Ort? Modellflugplatz? |
-| Wer macht mit? | Alleine ist es machbar, aber ein zweiter Bediener wird für Etappe 5 sowieso gebraucht |
-
----
-
 ## Womit du **jetzt** anfängst
 
-1. **Simulation starten** (`cd sensor && python3 suchkopf.py`, dann
-   `localhost:8080`) — 10 Minuten, kostet nichts, und du siehst, worauf das
-   Ganze hinausläuft.
-2. **Kamera und Pi bestellen** — 260 €. Das ist die Ausgabe, die die
-   entscheidende Frage beantwortet.
-3. **Kompetenznachweis A1/A3 online machen** — kostenlos, ein Nachmittag, und
-   er läuft im Hintergrund, während die Teile unterwegs sind.
+1. **Python installieren und die Simulation starten** — `cd sensor`, dann
+   `python3 suchkopf.py` (Windows: `py suchkopf.py`), Browser auf
+   `localhost:8080`
+2. **Kompetenznachweis A1/A3 online machen** — kostenlos, ein Nachmittag,
+   und er gilt fünf Jahre
+3. **Simulator einrichten und schweben üben** — jede Stunde dort spart später
+   Propeller
 
-Alles andere kann warten, bis die Kamera da ist.
+Das kostet zusammen keinen Cent und bringt dich bis an die Bestellung heran.
