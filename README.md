@@ -1,55 +1,50 @@
-# Einsatz-Helfer Feuerwehr
+# Projekt — Werkzeuge für die Feuerwehr
 
-Ein Helfer für die Einsatzstelle – läuft als **einzelne HTML-Datei** offline auf
-Handy, Tablet oder Laptop. Keine Installation, kein Server, kein Konto.
+Zwei Projekte für die Freiwillige Feuerwehr, beide praxistauglich gedacht und
+ohne Installationsaufwand benutzbar.
 
-> ⚠️ **Wichtig:** Die Atemschutzüberwachung in dieser App ist ein *Hilfsmittel*.
-> Sie ersetzt weder die Atemschutzüberwachung nach **FwDV 7** noch die
-> Überwachungstafel. Die Anzeige am Gerät und die Uhr am Trupp gelten immer vor
-> der App. Alle Rechenwerte sind Näherungen und ersetzen keine Ausbildung.
+## 🚒 [Einsatz-Helfer](index.html)
 
-## Was drin ist
+Eine einzelne HTML-Datei, die **offline** auf Handy oder Tablet an der
+Einsatzstelle läuft:
 
-**🫁 Atemschutzüberwachung**
-- Trupps mit Namen, Auftrag und Startdruck erfassen, Einsatzuhr läuft mit
-- Countdown bis zur nächsten Druckkontrolle (10-Minuten-Intervall nach FwDV 7)
-- Rückzugsdruck automatisch: doppelter Anmarschverbrauch + 70 bar Sicherheit,
-  ersatzweise die Ein-Drittel-Regel, solange kein Druck am Einsatzziel gemeldet ist
-- Ampel je Trupp (grün / gelb / rot), Alarmzeile und Signalton bei Rot
-- Display bleibt während der Überwachung wach (sofern der Browser das kann)
+* **Atemschutzüberwachung** — Einsatzuhr je Trupp, 10-Minuten-Countdown für die
+  Druckkontrolle, automatisch berechneter Rückzugsdruck, Ampel und Alarmton
+* **Einsatztagebuch** — Zeitstempel automatisch, Schnellwahl der üblichen Meldungen
+* **Rechner** — Pumpenausgangsdruck, Luftvorrat, Wasserbedarf, Schaummittel
+* **Bericht** als TXT, Backup als JSON, Druckansicht
 
-**📝 Einsatztagebuch**
-- Zeitstempel automatisch, Schnellwahl für die üblichen Meldungen
-  (Eintreffen, Wasser marsch, Feuer aus, Einrücken …)
-- Alles aus der Atemschutzüberwachung wird automatisch mitprotokolliert
+`index.html` im Browser öffnen — fertig. Details in der
+[Beschreibung weiter unten](#einsatz-helfer-im-detail).
 
-**🧮 Rechner**
-- Benötigter Pumpenausgangsdruck (Schlauchart, Länge, Durchfluss, Höhe)
-- Verbleibende Einsatzzeit aus Flaschendruck und Atemminutenvolumen
-- Wasserbedarf und Tankreichweite
-- Schaummittelbedarf und Reichweite des Vorrats
+> ⚠️ Hilfsmittel. Ersetzt weder die Atemschutzüberwachung nach FwDV 7 noch die
+> Überwachungstafel.
 
-**⚙️ Daten**
-- Einsatzbericht als TXT (Trupps, Druckkontrollen, komplettes Tagebuch)
-- Backup als JSON, Druck-/PDF-Ansicht
-- Abgeschlossene Einsätze im Archiv
+## 🔎 [Personensuche mit Drohne](drohne/)
 
-## Benutzen
+Software für eine selbstgebaute Suchdrohne: Wärmebildkamera nach unten,
+Auswertung an Bord, Trefferalarm mit GPS-Koordinate aufs Tablet.
 
-`index.html` im Browser öffnen – fertig.
+* [Technisches Konzept](drohne/KONZEPT.md) — Physik, Bauteilliste (600 €),
+  Rechtslage, Stufenplan
+* Läuft **sofort im Simulationsmodus**, ganz ohne Hardware:
+  `cd drohne/sensor && python3 suchkopf.py`
+* Bildstabilisierung gegen Wind, lernender Klassifikator, 84 Tests
 
-**Auf dem Handy als App:** Datei über einen beliebigen Weg öffnen (oder auf einer
-Webseite ablegen), dann im Browser *Teilen → Zum Home-Bildschirm*. Danach startet
-sie wie eine normale App und funktioniert ohne Netz.
+> ⚠️ Eigenbauprojekt, kein zugelassenes Einsatzmittel.
 
-## Wo liegen die Daten?
+---
 
-Ausschließlich im `localStorage` des Browsers auf dem jeweiligen Gerät. Nichts
-wird hochgeladen, es gibt keine Server-Verbindung. Umgekehrt heißt das: Wer die
-Browserdaten löscht, löscht die Einsatzdaten. **Nach dem Einsatz den Bericht
-exportieren.**
+## Einsatz-Helfer im Detail
 
-## Rechengrundlagen
+### Atemschutzüberwachung
+Trupps mit Namen, Auftrag und Startdruck erfassen; die Einsatzuhr läuft mit.
+Der Rückzugsdruck wird automatisch berechnet — doppelter Anmarschverbrauch plus
+70 bar Sicherheit, ersatzweise die Ein-Drittel-Regel, solange kein Druck am
+Einsatzziel gemeldet ist. Bei Rot gibt es Alarmzeile und Signalton, und das
+Display bleibt während der Überwachung wach.
+
+### Rechengrundlagen
 
 | Größe | Formel / Wert |
 |---|---|
@@ -60,5 +55,10 @@ exportieren.**
 | Luftvorrat | (aktueller Druck − Reserve) × Flaschenvolumen ÷ Atemminutenvolumen |
 | Strahlrohre | Richtwerte bei 5 bar: C mit MS 100, C ohne MS 200, C-Hohlstrahl 235, B mit MS 400, B ohne MS 800 l/min |
 
-Verteiler, Armaturen und Einzelfälle sind in den Näherungen **nicht** enthalten –
-an der Pumpe wird am Manometer nachgeregelt.
+Verteiler, Armaturen und Einzelfälle sind in den Näherungen **nicht** enthalten
+— an der Pumpe wird am Manometer nachgeregelt.
+
+### Wo liegen die Daten?
+Ausschließlich im `localStorage` des jeweiligen Geräts. Nichts wird
+hochgeladen. Umgekehrt heißt das: Browserdaten löschen löscht die Einsatzdaten.
+**Nach dem Einsatz den Bericht exportieren.**
