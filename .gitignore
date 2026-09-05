@@ -1,4 +1,4 @@
 __pycache__/
 *.pyc
-drohne/sensor/treffer/
-drohne/sensor/modell.json
+sensor/treffer/
+sensor/modell.json

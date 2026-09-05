@@ -1,64 +1,90 @@
-# Projekt — Werkzeuge für die Feuerwehr
+# Personensuche mit Drohne
 
-Zwei Projekte für die Freiwillige Feuerwehr, beide praxistauglich gedacht und
-ohne Installationsaufwand benutzbar.
+Software für eine selbstgebaute Suchdrohne der Freiwilligen Feuerwehr
+Ebersdorf bei Coburg: **Wärmebildkamera nach unten, Auswertung an Bord,
+Trefferalarm mit GPS-Koordinate aufs Tablet.**
 
-## 🚒 [Einsatz-Helfer](index.html)
+* **[PLAN.md](PLAN.md)** — der Arbeitsplan: was in welcher Reihenfolge zu tun
+  ist und womit man anfängt
+* **[KONZEPT.md](KONZEPT.md)** — das technische Konzept: Physik, Bauteilliste,
+  Rechtslage, Grenzen des Verfahrens
 
-Eine einzelne HTML-Datei, die **offline** auf Handy oder Tablet an der
-Einsatzstelle läuft:
+> ⚠️ Eigenbauprojekt, kein zugelassenes Einsatzmittel. Wild und Haustiere
+> sehen im Wärmebild aus wie Menschen — **jeder Treffer muss vom Bediener am
+> Bild geprüft werden.** Rechtliche Voraussetzungen siehe Konzept, Abschnitt 8.
 
-* **Atemschutzüberwachung** — Einsatzuhr je Trupp, 10-Minuten-Countdown für die
-  Druckkontrolle, automatisch berechneter Rückzugsdruck, Ampel und Alarmton
-* **Einsatztagebuch** — Zeitstempel automatisch, Schnellwahl der üblichen Meldungen
-* **Rechner** — Pumpenausgangsdruck, Luftvorrat, Wasserbedarf, Schaummittel
-* **Bericht** als TXT, Backup als JSON, Druckansicht
+## Sofort ausprobieren — ganz ohne Hardware
 
-`index.html` im Browser öffnen — fertig. Details in der
-[Beschreibung weiter unten](#einsatz-helfer-im-detail).
+```bash
+cd sensor
+python3 suchkopf.py
+```
 
-> ⚠️ Hilfsmittel. Ersetzt weder die Atemschutzüberwachung nach FwDV 7 noch die
-> Überwachungstafel.
+Dann `http://localhost:8080/` im Browser öffnen. Es läuft ein simulierter
+nächtlicher Suchflug: kalte Wiese, ein sonnenwarmer Feldweg, ein Steinhaufen,
+ein Auto mit heißer Motorhaube — und eine Person. Die Erkennung muss beweisen,
+dass sie nur die Person meldet.
 
-## 🔎 [Personensuche mit Drohne](drohne/)
+```bash
+python3 suchkopf.py --pruefen     # einmal auswerten, Ergebnis auf der Konsole
+python3 -m unittest discover -s ../tests    # 84 Tests
+```
 
-Software für eine selbstgebaute Suchdrohne: Wärmebildkamera nach unten,
-Auswertung an Bord, Trefferalarm mit GPS-Koordinate aufs Tablet.
+Es wird **nichts installiert**: reines Python 3 aus der Standardbibliothek.
+OpenCV braucht nur der Treiber der echten USB-Wärmebildkamera.
 
-* [Technisches Konzept](drohne/KONZEPT.md) — Physik, Bauteilliste (600 €),
-  Rechtslage, Stufenplan
-* Läuft **sofort im Simulationsmodus**, ganz ohne Hardware:
-  `cd drohne/sensor && python3 suchkopf.py`
-* Bildstabilisierung gegen Wind, lernender Klassifikator, 84 Tests
+## Mit echter Hardware
 
-> ⚠️ Eigenbauprojekt, kein zugelassenes Einsatzmittel.
+```bash
+WAERMEBILD_TYP=infiray WAERMEBILD_QUELLE=/dev/video0 \
+GPS_QUELLE=/dev/ttyAMA0 FLUGHOEHE_M=40 python3 suchkopf.py
+```
 
----
+Alle Einstellungen stehen in `sensor/konfig.py` und lassen sich über
+Umgebungsvariablen überschreiben — an der Einsatzstelle muss niemand Code
+anfassen.
 
-## Einsatz-Helfer im Detail
+## Aufbau
 
-### Atemschutzüberwachung
-Trupps mit Namen, Auftrag und Startdruck erfassen; die Einsatzuhr läuft mit.
-Der Rückzugsdruck wird automatisch berechnet — doppelter Anmarschverbrauch plus
-70 bar Sicherheit, ersatzweise die Ein-Drittel-Regel, solange kein Druck am
-Einsatzziel gemeldet ist. Bei Rot gibt es Alarmzeile und Signalton, und das
-Display bleibt während der Überwachung wach.
-
-### Rechengrundlagen
-
-| Größe | Formel / Wert |
+| Datei | Aufgabe |
 |---|---|
-| Druckverlust | Δp = k · (Q/100)² je 100 m; k = 0,0047 (A-110), 0,028 (B-75), 0,175 (C-52), 0,55 (C-42), 4,0 (D-25) |
-| Höhendifferenz | 1 bar je 10 m |
-| Rückzugsdruck | 2 × (Startdruck − Druck am Einsatzziel) + 60 bar Warnpfiff + 10 bar Reserve |
-| Ein-Drittel-Regel | Rückzug bei ⅓ des Startdrucks, mindestens 60 bar |
-| Luftvorrat | (aktueller Druck − Reserve) × Flaschenvolumen ÷ Atemminutenvolumen |
-| Strahlrohre | Richtwerte bei 5 bar: C mit MS 100, C ohne MS 200, C-Hohlstrahl 235, B mit MS 400, B ohne MS 800 l/min |
+| `sensor/suchkopf.py` | Hauptprogramm, Taktschleife |
+| `sensor/erkennung.py` | Fleckensuche und Bewertung im Wärmebild |
+| `sensor/suchflug.py` | Streifenbreite, Suchhöhe, Georeferenzierung, Suchmuster |
+| `sensor/stabilisierung.py` | Bildstabilisierung bei Wind, Fleckverfolgung |
+| `sensor/lernen.py` | Lernender Klassifikator aus den Bewertungen am Tablet |
+| `sensor/treffer.py` | Trefferverwaltung, Speicherung als JSON + PGM-Bild |
+| `sensor/web.py` | HTTP-Server und Ereignisstrom zur Bodenstation |
+| `sensor/geraete/` | Treiber Wärmebild und GPS, jeweils mit Simulation |
+| `bodenstation/index.html` | Oberfläche fürs Tablet |
+| `tests/` | 84 Tests, laufen ohne Hardware |
 
-Verteiler, Armaturen und Einzelfälle sind in den Näherungen **nicht** enthalten
-— an der Pumpe wird am Manometer nachgeregelt.
+## Wie erkannt wird
 
-### Wo liegen die Daten?
-Ausschließlich im `localStorage` des jeweiligen Geräts. Nichts wird
-hochgeladen. Umgekehrt heißt das: Browserdaten löschen löscht die Einsatzdaten.
-**Nach dem Einsatz den Bericht exportieren.**
+Aus 40 m Höhe ist ein Mensch kein 33-Grad-Körper mehr — Luft dämpft, jeder
+Bildpunkt mischt Person und Untergrund. Bewertet wird deshalb der **Kontrast
+zum Boden** nach drei Merkmalen: **Abhebung** (5–9 K nachts auf kalter Wiese),
+**Größe** (aus der Flughöhe ist ausrechenbar, wie viele Bildpunkte eine
+liegende Person haben muss) und **Form** (kompakt, nicht langgestreckt wie ein
+aufgeheizter Weg).
+
+Dazu die **Beständigkeit**: Ein Fleck, der nur in einem einzigen Bild
+auftaucht, ist bei Wind meist ein Verwackler.
+
+## Das Modell trainieren
+
+Jede Fundstelle wird gespeichert. Wer sie am Tablet als „Person" oder
+„Fehlalarm" markiert, erzeugt damit Trainingsdaten:
+
+```bash
+python3 lernen.py            # trainiert aus dem Ordner treffer/
+```
+
+Das Modell (logistische Regression über acht Merkmale) ersetzt die Regeln
+nicht, sondern wird mit ihnen gemischt — umso stärker, je mehr Beispiele es
+gesehen hat. Mit drei Beispielen entscheidet weiterhin die Regel.
+
+## Datenschutz
+
+Gespeichert werden **nur Treffer**, kein Dauermitschnitt: Wärmebildaufnahmen
+von Personen und Grundstücken sind personenbezogene Daten.
