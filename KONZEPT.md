@@ -128,8 +128,9 @@ fliegt die Drohne weiter und kommt nach Hause.
 
 | Teil | Auswahl | Preis |
 |---|---|---:|
-| Akku | Li-Ion 6S2P (P42A-Zellen), ca. 3 Ah | 90 € |
-| Ladegerät | falls nicht vorhanden | 45 € |
+| Akku | Li-Ion 6S2P (P42A), 8,4 Ah / 180 Wh — 30–40 min | 120 € |
+| Akku, leichte Alternative | Li-Ion 6S1P, 4,2 Ah — 20–25 min | 65 € |
+| Ladegerät | muss Li-Ion können, falls nicht vorhanden | 45 € |
 
 Li-Ion statt LiPo ist die wichtigste Einzelentscheidung für die Flugzeit:
 etwa doppelte Energiedichte bei geringerem Dauerstrom — für ruhigen
@@ -155,9 +156,13 @@ Suchflug genau richtig, für Kunstflug ungeeignet.
 
 | Fall | Betrag |
 |---|---:|
-| **Wenn Sender und Ladegerät vorhanden sind** | **600 €** |
-| Komplett bei null angefangen | 715 € |
+| **Hauptteile, wenn Sender und Ladegerät vorhanden sind** | **630 €** |
+| Vollständig inklusive Kleinteile und Werkzeug | 715–900 € |
 | Später nachrüstbar: LTE-Modem SIM7600 + Tarif | + 55 € |
+
+Die vollständige Einkaufsliste mit allen Kleinteilen, Stückzahlen und
+Kaufhinweisen steht in **[TEILELISTE.md](TEILELISTE.md)** — diese Tabelle hier
+nennt nur die Hauptposten.
 
 **Sparmöglichkeiten, falls es enger wird:** LiPo 6S statt Li-Ion spart 25 €
 (kostet aber ein Drittel der Flugzeit). Ein 5-Zoll-Rahmen spart 30 € (kostet

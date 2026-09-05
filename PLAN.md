@@ -129,7 +129,8 @@ ohne zu überlegen.
 
 ## A6 — Bestellung vorbereiten
 
-- [ ] Bauteilliste aus [KONZEPT.md](KONZEPT.md) Abschnitt 5 durchgehen
+- [ ] **[TEILELISTE.md](TEILELISTE.md)** durchgehen — vollständige Liste mit
+      Stückzahlen und Kaufhinweisen
 - [ ] Preise und Verfügbarkeit prüfen, möglichst wenige Händler
 - [ ] Prüfen, was du schon hast: RC-Sender? Ladegerät? Lötstation?
       Schrumpfschlauch, XT60-Stecker, Silikonlitze?
