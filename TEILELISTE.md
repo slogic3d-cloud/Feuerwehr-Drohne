@@ -109,10 +109,11 @@ Nur, was du wahrscheinlich noch nicht hast:
 
 | Fall | Betrag |
 |---|---:|
-| **Empfohlener Aufbau**, Sender / Lötzeug / Filament vorhanden, langer Akku | **~ 715 €** |
-| Dasselbe mit dem leichten Akku (20–25 min statt 30–40 min) | ~ 660 € |
-| Alles neu, inklusive Sender, Lötstation und Werkzeug | ~ 900 € |
+| **Deine Bestellung** — 6S1P, mit Sender und Ladegerät, vorhandenes Werkzeug abgezogen | **805 €** |
+| Mit dem langen Akku 6S2P statt 6S1P (30–40 statt 20–25 min) | 860 € |
+| Dasselbe ohne vorhandenes Werkzeug gerechnet | 939 € |
 | Nur Phase C1 vorab: Kamera, Pi, Karte, Adapter | **264 €** |
+| Nur der Sender, um früh im Simulator üben zu können | **82 €** |
 
 Die letzte Zeile ist die wichtige: Auch wenn alles zusammen bestellt wird —
 **Kamera und Pi zuerst auspacken und die Bodenmessreihe machen**, bevor an der
@@ -121,17 +122,65 @@ zurückschicken.
 
 ---
 
-## Was du wahrscheinlich schon hast
+## Bestandsaufnahme
 
-Vor dem Bestellen durchgehen — das sind schnell 150 € Unterschied:
+| Vorhanden | Fehlt noch |
+|---|---|
+| Lötstation, Lötzinn, Entlötlitze | RC-Sender mit ELRS |
+| Innensechskantschlüssel, Torx | Balancer-Ladegerät für Li-Ion |
+| Messschieber, Multimeter | |
+| Filament für den Drucker | |
+| Schrumpfschlauch, Kabelbinder, Klettband | |
 
-- [ ] RC-Sender mit ELRS
-- [ ] Balancer-Ladegerät, das Li-Ion kann
-- [ ] Lötstation, Lötzinn, Entlötlitze
-- [ ] Innensechskantschlüssel, Torx
-- [ ] Messschieber, Multimeter
-- [ ] Filament für den Drucker
-- [ ] Schrumpfschlauch, Kabelbinder, Klettband
+Das vorhandene Werkzeug spart rund **134 €** — vor allem Lötstation und
+Messwerkzeug.
+
+---
+
+## Die konkrete Bestellung
+
+Mit dem 6S1P-Akku und dem oben aufgeführten Bestand. Alles, was gestrichen ist,
+brauchst du nicht mehr zu kaufen.
+
+| Block | Inhalt | Betrag |
+|---|---|---:|
+| A · Flugzelle | Rahmen, 4 Motoren, Regler, Flugregler, Propeller, GPS, Empfänger, Summer, Positionslicht | 258 € |
+| B · Energie | Akku 6S1P, **Ladegerät**, Ladebeutel, Spannungswarner, XT60-Set | 133 € |
+| C · Nutzlast | Wärmebildkamera, Pi Zero 2 W, SD-Karte, OTG-Adapter, BEC | 274 € |
+| D · Mechanik | Schrauben M3 und M2,5, Abstandshalter, Dämpferkugeln, Schaumband, Silikonlitze, Schraubensicherung | 46 € |
+| E · Fernsteuerung | **RadioMaster Pocket ELRS + 2 × 18650** | 82 € |
+| F · Werkzeug | Smoke Stopper | 12 € |
+| | **Summe** | **805 €** |
+
+~~Filament, Schrumpfschlauch, Kabelbinder, Klettband, Lötstation, Lötzinn,
+Messschieber, Multimeter~~ — vorhanden.
+
+### Achtung beim Ladegerät
+
+Die meisten günstigen Ladegeräte sind **Gleichstromgeräte**: Sie brauchen ein
+separates 12-V-Netzteil, das nicht dabei ist. Das kostet noch einmal 25 € und
+wird beim Kauf gern übersehen.
+
+**Nimm ein Gerät mit eingebautem Netzteil** („AC/DC" oder „mit Netzanschluss").
+Und es muss ausdrücklich **Li-Ion** können — das ist ein eigener Lademodus mit
+4,2 V je Zelle Endspannung, nicht dasselbe wie LiPo. Ein Gerät, das nur LiPo
+kann, lädt das Pack falsch.
+
+### Der Sender ist das Teil, das sich früh lohnt
+
+Der RadioMaster Pocket lässt sich per USB als Gamepad am Rechner benutzen. Damit
+kannst du das Simulatortraining aus Phase A2 mit **genau den Knüppeln** machen,
+mit denen du später fliegst — das ist deutlich mehr wert als Üben mit einem
+Xbox-Controller.
+
+Wenn du also **ein** Teil vorziehen willst, dann dieses: 82 €, und du kannst
+sofort mit dem Fliegenlernen anfangen, während der Rest der Bestellung noch
+wartet. Muss aber nicht sein — der Plan funktioniert auch, wenn alles zusammen
+kommt.
+
+Alternative, die nichts kostet: Im Modellflugverein oder bei einem FPV-Flieger
+in der Umgebung nach einem ausgemusterten Sender fragen. ELRS-Sender werden oft
+weitergereicht, wenn jemand aufrüstet.
 
 ---
 

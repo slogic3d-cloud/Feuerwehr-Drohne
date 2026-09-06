@@ -145,13 +145,18 @@ ohne zu überlegen.
 
 **Kosten:** rund 600 € (mit Sender und Ladegerät 715 €)
 
-| Bereich | Inhalt | Betrag |
-|---|---|---:|
-| Nutzlast | InfiRay P2 Pro / Topdon TC001, Pi Zero 2 W + SD + OTG-Adapter | 260 € |
-| Zelle | Rahmen 7", 4× Motor 2807, 4-in-1-Regler, F405-Stack, Propeller, GPS M10, ELRS-Empfänger | 235 € |
-| Energie | Li-Ion 6S2P | 90 € |
-| Kleinteile | BEC 5 V/3 A, Stecker, Litze, Klettband | 15 € |
-| falls nötig | RC-Sender 70 €, Ladegerät 45 € | 115 € |
+Die vollständige, auf deinen Bestand abgestimmte Liste steht in
+**[TEILELISTE.md](TEILELISTE.md)**. Kurzfassung:
+
+| Bereich | Betrag |
+|---|---:|
+| Flugzelle (Rahmen, Motoren, Regler, Flugregler, GPS, Empfänger, Licht) | 258 € |
+| Energie (Akku 6S1P, Ladegerät, Zubehör) | 133 € |
+| Nutzlast (Wärmebildkamera, Pi, SD, Adapter, BEC) | 274 € |
+| Mechanik (Schrauben, Dämpfer, Litze) | 46 € |
+| Fernsteuerung (RadioMaster Pocket ELRS + Zellen) | 82 € |
+| Werkzeug (Smoke Stopper) | 12 € |
+| **Summe** | **805 €** |
 
 ---
 
