@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personensuchdrohne — Vorstellung</title>
+<style>
+  @page { size: A4; margin: 15mm; }
+  * { box-sizing: border-box; }
+  body {
+    font: 11pt/1.55 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: #111; background: #fff; margin: 0 auto; padding: 18px; max-width: 190mm;
+  }
+  h1 { font-size: 19pt; margin: 0 0 3px; letter-spacing: -.01em; }
+  h2 {
+    font-size: 12pt; margin: 22px 0 8px; padding-bottom: 4px;
+    border-bottom: 2px solid #b3261e; color: #b3261e;
+  }
+  .unter { font-size: 10pt; color: #555; margin-bottom: 4px; }
+  .kopf { border-bottom: 3px solid #b3261e; padding-bottom: 10px; margin-bottom: 4px; }
+
+  p { margin: 8px 0; }
+  ul { margin: 8px 0; padding-left: 20px; }
+  li { margin-bottom: 4px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 10pt; margin: 9px 0; }
+  th, td { border: 1px solid #bbb; padding: 5px 8px; text-align: left; }
+  th { background: #f0f0f0; font-size: 9pt; text-transform: uppercase; letter-spacing: .04em; }
+  td.zahl { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .kennzahlen { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin: 12px 0; }
+  .kz { border: 1px solid #bbb; border-top: 3px solid #b3261e; padding: 9px 10px; }
+  .kz .z { font-size: 17pt; font-weight: 700; letter-spacing: -.02em; }
+  .kz .b { font-size: 8pt; text-transform: uppercase; letter-spacing: .04em; color: #555; font-weight: 700; margin-top: 2px; }
+
+  .grenzen { border: 1px solid #b3261e; background: #fdf2f1; padding: 11px 13px; margin: 10px 0; font-size: 10pt; }
+  /* Nur die Überschrift des Kastens umbrechen, nicht jedes fette Wort im Text. */
+  .grenzen > b { display: block; margin-bottom: 4px; }
+  .luecke { display: inline-block; min-width: 60px; border-bottom: 1px solid #888; }
+  .fussnote { font-size: 8.5pt; color: #666; margin-top: 22px; border-top: 1px solid #ccc; padding-top: 7px; }
+  .seitenumbruch { page-break-before: always; }
+  .drucken { text-align: right; margin-bottom: 8px; }
+  .drucken button { font: inherit; padding: 7px 14px; border: 1.5px solid #000;
+                    background: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  @media print { .drucken { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+
+<div class="drucken"><button onclick="window.print()">Drucken</button></div>
+
+<div class="kopf">
+  <h1>Personensuche aus der Luft</h1>
+  <div class="unter">Vorschlag für ein Eigenbauprojekt der Freiwilligen Feuerwehr
+  Ebersdorf bei Coburg · Vorgelegt von <span class="luecke">&nbsp;</span>
+  · <span class="luecke">&nbsp;</span></div>
+</div>
+
+<h2>Worum es geht</h2>
+<p>
+Bei Vermisstensuchen im Freien kostet das Absuchen großer Flächen sehr viele
+Einsatzkräfte und sehr viel Zeit. Eine Drohne mit Wärmebildkamera kann eine
+Fläche in Minuten überfliegen, für die eine Suchkette Stunden braucht — und
+sie sieht nachts das, was das Auge nicht sieht.
+</p>
+<p>
+Der Vorschlag ist ein <b>selbstgebautes Gerät für rund 800 €</b>. Die Software
+ist bereits geschrieben und getestet, die Konstruktion steht. Was aussteht,
+sind Beschaffung, Aufbau und der Nachweis, dass das Gerät im Gelände
+zuverlässig findet.
+</p>
+
+<h2>Was das Gerät leisten soll</h2>
+<div class="kennzahlen">
+  <div class="kz"><div class="z">40 m</div><div class="b">Suchhöhe</div></div>
+  <div class="kz"><div class="z">34 m</div><div class="b">Streifenbreite</div></div>
+  <div class="kz"><div class="z">1,2 ha</div><div class="b">je Flugminute</div></div>
+  <div class="kz"><div class="z">20 ha</div><div class="b">je Akku</div></div>
+</div>
+<p>
+20 Hektar je Akkuladung entsprechen einem Gebiet von rund <b>450 × 450 m</b>.
+Mit vier geladenen Akkus im Koffer sind das etwa 80 Hektar in gut zwei Stunden
+— bei einer Suchkette von 20 Kräften ein Vielfaches an Personalstunden.
+</p>
+<p>
+Die Auswertung läuft automatisch an Bord: Das Gerät meldet Wärmequellen, die
+nach Größe, Temperaturunterschied und Form zu einem liegenden Menschen passen,
+mit Alarm auf ein Tablet — mitsamt <b>GPS-Koordinate der Fundstelle</b>, die
+direkt an den suchenden Trupp weitergegeben werden kann.
+</p>
+
+<h2>Wo es hilft</h2>
+<ul>
+  <li>Vermisste, hilflose oder demente Personen im Feld, auf Wiesen und am Waldrand</li>
+  <li>Vermisstes Kind — große Fläche in kurzer Zeit</li>
+  <li>Person nach Verkehrsunfall aus dem Fahrzeug geschleudert, nachts</li>
+  <li>Uferbereiche nach Gewässerunfall</li>
+  <li>Übersicht über eine unübersichtliche Einsatzstelle</li>
+</ul>
+
+<div class="grenzen">
+  <b>Was das Gerät ausdrücklich nicht kann</b>
+  <ul style="margin-top:3px">
+    <li><b>Wild und Haustiere sehen im Wärmebild aus wie Menschen.</b> Die Software
+        kann das nicht sicher unterscheiden — jeder Treffer muss vom Bediener
+        am Bild geprüft werden.</li>
+    <li>Unter dichtem sommerlichem Laubdach ist eine Person aus der Luft nicht
+        sichtbar. Im Wald ist das Gerät nur bedingt brauchbar, im Winter
+        deutlich besser als im Sommer.</li>
+    <li>Bei sonnenwarmem Boden verschwindet der Temperaturunterschied.
+        Beste Bedingungen sind <b>nachts und früh morgens</b>.</li>
+    <li>Bei Regen sinkt die Reichweite deutlich, bei dichtem Nebel geht nichts.</li>
+    <li>Es ersetzt weder Suchkette noch Rettungshund. Es sortiert Flächen vor.</li>
+  </ul>
+</div>
+
+<div class="seitenumbruch"></div>
+
+<h2>Kosten</h2>
+<table>
+  <tr><th>Position</th><th style="text-align:right">Betrag</th></tr>
+  <tr><td>Wärmebildkamera und Bordrechner</td><td class="zahl">274 €</td></tr>
+  <tr><td>Flugzelle, Antrieb, Steuerung</td><td class="zahl">258 €</td></tr>
+  <tr><td>Akku, Ladegerät, Zubehör</td><td class="zahl">133 €</td></tr>
+  <tr><td>Fernsteuerung</td><td class="zahl">82 €</td></tr>
+  <tr><td>Kleinteile und Werkzeug</td><td class="zahl">58 €</td></tr>
+  <tr><th>Summe Material</th><th style="text-align:right">805 €</th></tr>
+</table>
+<p style="font-size:10pt">
+Software, Konstruktion, Aufbau und Erprobung erfolgen <b>in Eigenleistung</b>.
+Gehäuseteile werden selbst gedruckt. Zum Vergleich: Vergleichbare gewerbliche
+Systeme beginnen im mittleren vierstelligen Bereich, geeignete Geräte mit
+Wärmebild liegen bei 5 000 € aufwärts.
+</p>
+
+<h2>Stand des Projekts</h2>
+<table>
+  <tr><th>Schritt</th><th>Stand</th></tr>
+  <tr><td>Auswertesoftware und Bodenstation</td><td>fertig und getestet</td></tr>
+  <tr><td>Technisches Konzept, Teileliste, Konstruktion</td><td>fertig</td></tr>
+  <tr><td>Vorversuch mit der Wärmebildkamera der Wehr</td><td><span class="luecke">&nbsp;</span></td></tr>
+  <tr><td>Kompetenznachweis A1/A3 des Bedieners</td><td><span class="luecke">&nbsp;</span></td></tr>
+  <tr><td>Beschaffung</td><td>offen</td></tr>
+  <tr><td>Aufbau und Erprobung</td><td>offen</td></tr>
+  <tr><td>Gemessene Trefferquote</td><td><span class="luecke">&nbsp;</span></td></tr>
+</table>
+
+<h2>Nachgewiesene Leistung</h2>
+<p style="font-size:10pt">
+Erst diese Zahlen entscheiden darüber, ob aus dem Projekt ein Einsatzmittel
+wird. Sie werden bei Übungsflügen über bekannte Ziele gemessen und hier
+eingetragen:
+</p>
+<table>
+  <tr><th>Höhe</th><th>Versuche</th><th>gefunden</th><th>Quote</th><th>Fehlalarme je Flug</th></tr>
+  <tr><td class="zahl">30 m</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td class="zahl">40 m</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td class="zahl">50 m</td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>Was dafür gebraucht wird</h2>
+<ul>
+  <li><b>Zustimmung der Wehrführung</b>, das Gerät zu bauen und zu erproben</li>
+  <li><b>Klärung der Genehmigungslage</b> über die Kreisbrandinspektion beim
+      Luftamt Nordbayern. Ein selbstgebautes Gerät ohne C-Kennzeichnung darf in
+      der offenen Kategorie nur in A3 fliegen — also mit 150 m Abstand zu
+      Wohn- und Gewerbegebieten. Für Einsatzflüge darüber hinaus braucht es
+      eine Genehmigung.</li>
+  <li><b>Versicherung:</b> Halterhaftpflicht ist vorgeschrieben. Eine private
+      Drohnenversicherung deckt Einsatzflüge in der Regel nicht — der
+      kommunale Versicherer muss eingebunden werden.</li>
+  <li><b>Ein zweiter eingewiesener Bediener.</b> Ein Gerät, das nur einer
+      bedienen kann, ist im Einsatz nicht verfügbar.</li>
+  <li>Entscheidung über die Finanzierung: Eigenmittel, Haushalt oder Förderung</li>
+</ul>
+
+<h2>Vorschlag für das weitere Vorgehen</h2>
+<ol>
+  <li>Vorversuch mit der vorhandenen Wärmebildkamera — kostet nichts und zeigt,
+      ob sich Personen auf unseren Flächen ausreichend abheben</li>
+  <li>Beschaffung, Aufbau und Erprobung in Eigenleistung</li>
+  <li>Übungsflüge über bekannte Ziele, Trefferquote messen und dokumentieren</li>
+  <li>Vorführung mit den gemessenen Zahlen, dann Entscheidung über den
+      Einsatzbetrieb</li>
+  <li>Genehmigungen und Versicherung klären, Einsatzablauf festschreiben,
+      zweiten Bediener einweisen</li>
+</ol>
+
+<div class="fussnote">
+  Eigenbauprojekt, derzeit kein zugelassenes Einsatzmittel. Technisches Konzept,
+  Teileliste, Konstruktionsunterlagen und Quellcode sind vollständig
+  dokumentiert und liegen bei. Datenschutz: Es werden ausschließlich
+  Fundstellen gespeichert, kein durchgehender Mitschnitt.
+</div>
+
+</body>
+</html>

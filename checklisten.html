@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checklisten Personensuchdrohne</title>
+<style>
+  @page { size: A4; margin: 11mm; }
+  * { box-sizing: border-box; }
+  body {
+    font: 10.5pt/1.4 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: #000; background: #fff; margin: 0 auto; padding: 14px; max-width: 200mm;
+  }
+  h1 { font-size: 15pt; margin: 0 0 2px; }
+  h2 {
+    font-size: 11pt; margin: 16px 0 7px; padding: 4px 8px;
+    background: #000; color: #fff; text-transform: uppercase; letter-spacing: .05em;
+  }
+  h3 { font-size: 10pt; margin: 11px 0 5px; }
+  .unter { font-size: 9pt; color: #444; margin-bottom: 8px; }
+
+  ol.schritte { list-style: none; margin: 0; padding: 0; counter-reset: schritt; }
+  ol.schritte li {
+    counter-increment: schritt; position: relative;
+    padding: 4px 0 4px 46px; border-bottom: 1px solid #ddd; font-size: 10pt;
+  }
+  ol.schritte li::before {
+    content: counter(schritt); position: absolute; left: 22px; top: 4px;
+    font-weight: 700; font-size: 9pt; color: #555;
+  }
+  ol.schritte li::after {
+    content: ""; position: absolute; left: 0; top: 5px;
+    width: 12px; height: 12px; border: 1.4px solid #000;
+  }
+  ol.schritte li b { font-weight: 700; }
+  ol.schritte li .zusatz { display: block; font-size: 8.5pt; color: #555; margin-top: 1px; }
+
+  .achtung {
+    border: 2px solid #000; padding: 9px 11px; margin: 10px 0; font-size: 9.5pt;
+    line-height: 1.5; background: #f0f0f0;
+  }
+  .achtung b { display: block; margin-bottom: 3px; font-size: 10pt; }
+
+  .notfall { border: 1.5px solid #000; margin-bottom: 9px; page-break-inside: avoid; }
+  .notfall .titel { background: #000; color: #fff; padding: 4px 9px; font-weight: 700; font-size: 10pt; }
+  .notfall .inhalt { padding: 7px 9px; font-size: 9.5pt; }
+  .notfall ol { margin: 0; padding-left: 17px; }
+  .notfall li { margin-bottom: 2px; }
+
+  .kopfzeile { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 14px; margin-bottom: 8px; }
+  .kopfzeile .feld { font-size: 9pt; }
+  .kopfzeile .feld span { display: block; font-size: 7.5pt; text-transform: uppercase; letter-spacing: .04em; color: #444; }
+  .kopfzeile .feld .linie { border-bottom: 1px solid #000; height: 17px; }
+
+  .seitenumbruch { page-break-before: always; }
+  .drucken { text-align: right; margin-bottom: 6px; }
+  .drucken button { font: inherit; padding: 7px 14px; border: 1.5px solid #000;
+                    background: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  @media print { .drucken { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+
+<div class="drucken"><button onclick="window.print()">Drucken</button></div>
+
+<h1>Checklisten — Personensuchdrohne</h1>
+<div class="unter">Freiwillige Feuerwehr Ebersdorf bei Coburg · Zum Laminieren und in den Koffer</div>
+
+<div class="achtung">
+  <b>Die drei Regeln, die über allem stehen</b>
+  1 · <b style="display:inline">Kommt ein Rettungshubschrauber, wird sofort gelandet.</b>
+  Manntragende Luftfahrt hat immer Vorrang — nicht ausweichen, nicht tiefer
+  gehen, sondern landen.<br>
+  2 · Die Drohne bleibt in Sichtweite. Wer sie nicht sieht, steuert sie nicht.<br>
+  3 · Jeder Treffer wird am Bild geprüft. Wild sieht im Wärmebild aus wie ein
+  Mensch — die Software kann das nicht unterscheiden.
+</div>
+
+<h2>A · Bereitschaft — im Gerätehaus, nicht an der Einsatzstelle</h2>
+<ol class="schritte">
+  <li>Alle Akkus geladen und im Koffer <span class="zusatz">Li-Ion wird für die Lagerung nicht voll geladen — vor dem Dienst nachladen</span></li>
+  <li>Sender geladen</li>
+  <li>Tablet geladen, Bodenstation öffnet sich</li>
+  <li>SD-Karte im Pi, genug Platz frei</li>
+  <li>Propeller unbeschädigt, Ersatzsatz dabei</li>
+  <li>Ersatzarme, Kabelbinder, Schraubensicherung im Koffer</li>
+  <li>Wärmebildkamera fest, Objektiv sauber</li>
+  <li>Diese Checklisten liegen im Koffer</li>
+</ol>
+
+<h2>B · Vorflugkontrolle an der Einsatzstelle</h2>
+
+<h3>Lage und Umfeld</h3>
+<ol class="schritte">
+  <li><b>Bei der Einsatzleitung melden</b> und Freigabe einholen <span class="zusatz">Fliegt oder kommt ein Hubschrauber? Dann kein Start.</span></li>
+  <li>Freileitungen, Masten, Bäume, Seilbahnen im Suchgebiet geprüft</li>
+  <li>Wind eingeschätzt <span class="zusatz">Über 8 m/s wird das Bild unruhig und die Flugzeit fällt spürbar</span></li>
+  <li>Niederschlag: bei Regen nicht starten</li>
+  <li>Startplatz frei, Zuschauer und Kräfte auf Abstand</li>
+  <li>Startpunkt gut wiedererkennbar gewählt <span class="zusatz">Die Rückkehrfunktion fliegt genau hierher</span></li>
+</ol>
+
+<h3>Gerät</h3>
+<ol class="schritte">
+  <li>Sichtprüfung: Rahmen, Arme, Propeller ohne Risse</li>
+  <li>Propeller fest, Drehrichtung stimmt</li>
+  <li>Kamerahalter fest, Kabel gesichert</li>
+  <li>Akku fest verzurrt, Stecker sitzt</li>
+  <li><b>Sender zuerst einschalten</b>, danach die Drohne <span class="zusatz">Beim Ausschalten umgekehrt: erst Drohne, dann Sender</span></li>
+  <li>GPS-Empfang abwarten, mindestens 8 Satelliten</li>
+  <li>Kompass ohne Warnung, Horizont steht waagerecht</li>
+  <li>Akkuspannung notiert</li>
+  <li>Tablet verbunden, Wärmebild kommt an</li>
+  <li><b>Bildlage geprüft:</b> Jemand stellt sich vor die Nase — er muss im Wärmebild <b>oben</b> erscheinen <span class="zusatz">Sonst stimmen die gemeldeten Koordinaten nicht</span></li>
+  <li>Suchgebiet im Tablet geplant, Höhe und Bahnabstand gesetzt</li>
+  <li>Rückkehrfunktion und Failsafe geprüft</li>
+</ol>
+
+<div class="seitenumbruch"></div>
+
+<h2>C · Suchflug</h2>
+<div class="kopfzeile">
+  <div class="feld"><span>Einsatz / Stichwort</span><div class="linie"></div></div>
+  <div class="feld"><span>Startzeit</span><div class="linie"></div></div>
+  <div class="feld"><span>Pilot</span><div class="linie"></div></div>
+</div>
+<ol class="schritte">
+  <li>Senkrecht auf Suchhöhe steigen, kurz stehen bleiben, Bild prüfen</li>
+  <li>Bahnen möglichst <b>gegen den Wind</b> abfliegen <span class="zusatz">Ruhigeres Bild und gleichmäßigere Geschwindigkeit</span></li>
+  <li>Gleichmäßig 6–8 m/s, Höhe halten</li>
+  <li>Akkuspannung und Flugzeit dauerhaft im Blick</li>
+  <li>Bei Alarm: <b>anhalten, Bild ansehen</b> — Form und Größe prüfen: Mensch oder Wild?</li>
+  <li>Fundstelle als „Person" oder „Fehlalarm" markieren</li>
+  <li>Koordinate an die Einsatzleitung geben, Trupp einweisen</li>
+  <li>Bei 30 % Restakku Rückflug antreten <span class="zusatz">Nicht bis zur Warnung ausreizen — Gegenwind kostet mehr, als man denkt</span></li>
+  <li>Nach dem Akkuwechsel dort weitermachen, wo aufgehört wurde</li>
+</ol>
+
+<h2>D · Notfälle</h2>
+
+<div class="notfall">
+  <div class="titel">Rettungshubschrauber im Anflug</div>
+  <div class="inhalt"><ol>
+    <li><b>Sofort landen</b>, egal wo — notfalls kontrolliert absetzen</li>
+    <li>Der Einsatzleitung melden, dass die Drohne am Boden ist</li>
+    <li>Erst nach ausdrücklicher Freigabe wieder starten</li>
+  </ol></div>
+</div>
+
+<div class="notfall">
+  <div class="titel">Verbindung zum Tablet weg</div>
+  <div class="inhalt"><ol>
+    <li>Ruhig bleiben — die Fernsteuerung ist ein eigener Weg und funktioniert weiter</li>
+    <li>Von Hand zurückfliegen, Sichtkontakt halten</li>
+    <li>Landen und die Verbindung am Boden prüfen</li>
+  </ol></div>
+</div>
+
+<div class="notfall">
+  <div class="titel">Verbindung zur Fernsteuerung weg</div>
+  <div class="inhalt"><ol>
+    <li>Die Drohne hält an und kehrt selbstständig zum Startpunkt zurück</li>
+    <li>Startbereich sofort freimachen</li>
+    <li>Sender eingeschaltet lassen — sobald die Verbindung steht, wieder übernehmen</li>
+  </ol></div>
+</div>
+
+<div class="notfall">
+  <div class="titel">Akkuwarnung</div>
+  <div class="inhalt"><ol>
+    <li>Suche abbrechen, direkt zum Startpunkt</li>
+    <li>Bei starkem Gegenwind: tiefer gehen, dort ist weniger Wind</li>
+    <li>Reicht es nicht: an sicherer Stelle landen und zu Fuß holen — <b>eine gelandete Drohne ist besser als eine abgestürzte</b></li>
+  </ol></div>
+</div>
+
+<div class="notfall">
+  <div class="titel">Drohne reagiert nicht mehr / fliegt weg</div>
+  <div class="inhalt"><ol>
+    <li>Rückkehrfunktion am Sender auslösen</li>
+    <li>Hilft das nicht: Flugrichtung und letzte Position merken</li>
+    <li>Einsatzleitung informieren — eine unkontrollierte Drohne ist eine Gefahr für andere</li>
+    <li>Letzte bekannte Koordinate steht im Tablet</li>
+  </ol></div>
+</div>
+
+<div class="notfall">
+  <div class="titel">Absturz</div>
+  <div class="inhalt"><ol>
+    <li>Niemanden an die Absturzstelle laufen lassen, bis die Propeller stehen</li>
+    <li>Akku abstecken, auf Verformung und Erwärmung prüfen</li>
+    <li><b>Beschädigten Akku nicht ins Fahrzeug</b> — abseits ablegen und beobachten</li>
+    <li>Gerät nicht wieder starten, bevor es durchgesehen wurde</li>
+  </ol></div>
+</div>
+
+<div class="notfall">
+  <div class="titel">Person gefunden</div>
+  <div class="inhalt"><ol>
+    <li>Position halten, Bild prüfen und speichern</li>
+    <li>Koordinate an die Einsatzleitung, Trupp einweisen</li>
+    <li>Über der Fundstelle bleiben, solange der Akku reicht — die Drohne ist der beste Wegweiser</li>
+    <li>Ist die Person versorgt: Suche fortsetzen oder beenden</li>
+  </ol></div>
+</div>
+
+<h2>E · Nach dem Einsatz</h2>
+<ol class="schritte">
+  <li>Landen, Drohne ausschalten, dann den Sender</li>
+  <li>Akku abstecken und aus dem Gerät nehmen</li>
+  <li><b>Bericht und Fundstellen sichern</b> <span class="zusatz">Browserdaten löschen heißt: Einsatzdaten weg</span></li>
+  <li>Fundstellen bewerten und das Modell trainieren</li>
+  <li>Sichtprüfung: Propeller, Arme, Kamerahalter, Kabel</li>
+  <li>Akkus auf Lagerspannung bringen, wenn sie länger liegen</li>
+  <li>Alles laden, Koffer wieder einsatzbereit machen</li>
+  <li>Was ist aufgefallen? Notieren — daraus wird die nächste Verbesserung</li>
+</ol>
+
+</body>
+</html>

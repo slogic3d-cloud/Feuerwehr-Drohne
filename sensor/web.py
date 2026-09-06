@@ -17,7 +17,10 @@ import os
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse
+
+import konfig
+import mission
 
 SEITE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                      "..", "bodenstation", "index.html")
@@ -35,6 +38,7 @@ class Zustand:
                           "zeit": 0.0}
         self.statistik = {"takte": 0, "laufzeit_s": 0.0, "bilder_je_s": 0.0}
         self.suchplan = {}
+        self.suchgebiet = None      # zuletzt geplanter Suchflug
 
     def melden(self, lage_dict):
         with self._sperre:
@@ -96,6 +100,11 @@ class Griff(BaseHTTPRequestHandler):
         if pfad == "/treffer":
             v = self.zustand.treffer_verwaltung
             return self._json({"treffer": v.liste() if v else []})
+        if pfad == "/suchgebiet":
+            # Ohne Angaben: die zuletzt berechnete Planung zurueckgeben.
+            return self._json({"plan": self.zustand.suchgebiet})
+        if pfad == "/mission":
+            return self._mission()
         if pfad == "/zustand":
             return self._json({
                 "statistik": self.zustand.statistik,
@@ -103,6 +112,21 @@ class Griff(BaseHTTPRequestHandler):
                 "steuerung": self.zustand.steuerung,
             })
         self.send_error(404, "Nicht gefunden")
+
+    def _mission(self):
+        """Liefert die zuletzt geplante Mission als Datei zum Herunterladen."""
+        plan = self.zustand.suchgebiet
+        if not plan or not plan.get("mission"):
+            self.send_error(404, "Noch kein Suchgebiet geplant")
+            return
+        inhalt = plan["mission"].encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain; charset=utf-8")
+        self.send_header("Content-Disposition",
+                         'attachment; filename="suchflug.waypoints"')
+        self.send_header("Content-Length", str(len(inhalt)))
+        self.end_headers()
+        self.wfile.write(inhalt)
 
     def _seite(self):
         try:
@@ -163,6 +187,28 @@ class Griff(BaseHTTPRequestHandler):
             }
             # Hier wird spaeter der MAVLink-Befehl an den Flugregler gesetzt.
             return self._json({"uebernommen": True})
+
+        if pfad == "/suchgebiet":
+            daten = self._koerper_lesen()
+            try:
+                ecke_a = (float(daten["a_breite"]), float(daten["a_laenge"]))
+                ecke_b = (float(daten["b_breite"]), float(daten["b_laenge"]))
+                hoehe = float(daten.get("hoehe", konfig.FLUGHOEHE_M))
+            except (KeyError, TypeError, ValueError):
+                return self._json({"fehler": "Ecken oder Höhe fehlen"}, 400)
+            if hoehe <= 0:
+                return self._json({"fehler": "Höhe muss größer als 0 sein"}, 400)
+            try:
+                plan = mission.planen(
+                    ecke_a, ecke_b, hoehe, konfig,
+                    tempo_ms=float(daten.get("tempo", 8.0)),
+                    richtung=("ost" if daten.get("richtung") == "ost" else "nord"),
+                    flugzeit_min=float(daten.get("flugzeit", 22.0)),
+                    startpunkt=ecke_a)
+            except ValueError as fehler:
+                return self._json({"fehler": str(fehler)}, 400)
+            self.zustand.suchgebiet = plan
+            return self._json({"plan": plan})
 
         if pfad == "/bewerten":
             daten = self._koerper_lesen()

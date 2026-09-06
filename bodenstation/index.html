@@ -114,6 +114,22 @@ main{max-width:1200px;margin:0 auto;padding:13px;display:grid;gap:13px}
 .balken{flex:1;height:6px;background:#0f141b;border-radius:4px;overflow:hidden;position:relative}
 .balken i{position:absolute;top:0;bottom:0;background:var(--blau);border-radius:4px}
 .hinweis{font-size:12px;color:var(--schwach);line-height:1.5;margin-top:10px}
+.ecke{display:flex;gap:7px;align-items:center;margin-bottom:8px}
+.ecke .eckname{font-size:12px;font-weight:700;color:var(--schwach);width:48px;flex:none}
+.ecke input{flex:1;min-width:0;padding:8px 9px;border:1px solid var(--rand);border-radius:9px;background:#0f141b;color:var(--text);font:inherit;font-size:13px}
+.ecke input:focus{outline:none;border-color:var(--blau)}
+.ecke .knopf{flex:none;padding:8px 11px}
+.raster4{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:11px}
+@media(min-width:560px){.raster4{grid-template-columns:repeat(4,1fr)}}
+.raster4 label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--schwach);font-weight:700}
+.raster4 input,.raster4 select{width:100%;margin-top:4px;padding:8px 9px;border:1px solid var(--rand);border-radius:9px;background:#0f141b;color:var(--text);font:inherit;font-size:13px}
+.raster4 input:focus,.raster4 select:focus{outline:none;border-color:var(--blau)}
+.bahnen{background:#0f141b;border-radius:10px;margin-top:11px;padding:8px;display:flex;justify-content:center}
+/* Breite und Höhe stehen als Attribute im SVG, damit das Seitenverhältnis
+   des Gebiets erhalten bleibt und ein schmales, langes Gebiet die Karte
+   nicht in die Länge zieht. */
+.bahnen svg{display:block;max-width:100%;max-height:300px;width:auto;height:auto}
+.fehlermeldung{background:#2c1210;color:var(--rot);border-radius:10px;padding:9px 11px;font-size:12.5px;font-weight:600;margin-top:11px}
 .warnung{background:#2a1f0c;color:var(--gelb);border-radius:10px;padding:10px 12px;font-size:12.5px;font-weight:600;line-height:1.45}
 </style>
 </head>
@@ -149,10 +165,45 @@ main{max-width:1200px;margin:0 auto;padding:13px;display:grid;gap:13px}
       </div>
     </div>
 
-    <div class="karte">
+    <div class="karte" style="margin-bottom:13px">
       <h2>Suchflug</h2>
       <div class="werte" id="plan"></div>
       <div class="hinweis" id="plan-hinweis"></div>
+    </div>
+
+    <div class="karte">
+      <h2>Suchgebiet planen</h2>
+      <div class="ecke">
+        <span class="eckname">Ecke A</span>
+        <input type="number" id="a-breite" step="0.000001" placeholder="Breite">
+        <input type="number" id="a-laenge" step="0.000001" placeholder="Länge">
+        <button class="knopf" data-uebernehmen="a" title="aktuelle Position übernehmen">⌖</button>
+      </div>
+      <div class="ecke">
+        <span class="eckname">Ecke B</span>
+        <input type="number" id="b-breite" step="0.000001" placeholder="Breite">
+        <input type="number" id="b-laenge" step="0.000001" placeholder="Länge">
+        <button class="knopf" data-uebernehmen="b" title="aktuelle Position übernehmen">⌖</button>
+      </div>
+
+      <div class="raster4">
+        <label>Höhe m<input type="number" id="g-hoehe" value="40" step="5" min="5"></label>
+        <label>Tempo m/s<input type="number" id="g-tempo" value="8" step="1" min="1"></label>
+        <label>Bahnen<select id="g-richtung"><option value="nord">Nord–Süd</option><option value="ost">Ost–West</option></select></label>
+        <label>Akku min<input type="number" id="g-flugzeit" value="22" step="1" min="1"></label>
+      </div>
+
+      <div class="bildleiste" style="margin-top:11px">
+        <button class="knopf an" data-tun="planen">Berechnen</button>
+        <a class="knopf" id="mission-laden" href="/mission" download="suchflug.waypoints" hidden>Missionsdatei laden</a>
+      </div>
+
+      <div id="gebiet-ergebnis"></div>
+      <div class="hinweis">
+        Zwei gegenüberliegende Ecken genügen. Das ⌖ übernimmt die aktuelle
+        Position der Drohne — einmal an jeder Ecke des Gebiets schweben.
+        Die Missionsdatei lässt sich in Mission Planner laden.
+      </div>
     </div>
   </div>
 
@@ -450,6 +501,7 @@ function verbinden(){
       bildZeichnen(lage.bild);
       markenZeichnen(lage);
       alarmZeigen(lage);
+      if(lage.position) letztePosition = lage.position;
     }
     trefferZeigen(paket.treffer);
     planZeigen(paket.suchplan);
@@ -480,6 +532,12 @@ document.addEventListener("click", async (ev) => {
     }).then(r => r.json()).then(a => trefferZeigen(a.treffer)).catch(() => {});
     return;
   }
+  const ecke = ev.target.closest("[data-uebernehmen]");
+  if(ecke){ eckeUebernehmen(ecke.dataset.uebernehmen); return; }
+
+  const planen = ev.target.closest('[data-tun="planen"]');
+  if(planen){ gebietPlanen(); return; }
+
   const kopieren = ev.target.closest("[data-kopieren]");
   if(kopieren){
     try{
@@ -499,6 +557,112 @@ $("#btn-marken").addEventListener("click", (ev) => {
   ev.target.classList.toggle("an", markenAn);
   if(!markenAn) $("#markierungen").innerHTML = "";
 });
+
+/* ---------------- Suchgebiet ---------------- */
+
+let letztePosition = null;
+
+function eckeUebernehmen(welche){
+  if(!letztePosition){
+    melde("Noch keine GPS-Position vom Suchkopf");
+    return;
+  }
+  $("#" + welche + "-breite").value = letztePosition.breite.toFixed(6);
+  $("#" + welche + "-laenge").value = letztePosition.laenge.toFixed(6);
+}
+
+function melde(text){
+  const alt = document.querySelector(".fehlermeldung.fluechtig");
+  if(alt) alt.remove();
+  const el = document.createElement("div");
+  el.className = "fehlermeldung fluechtig";
+  el.textContent = text;
+  $("#gebiet-ergebnis").prepend(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+/** Zeichnet die geplanten Bahnen als einfachen Grundriss. */
+function bahnenZeichnen(wegpunkte){
+  if(!wegpunkte || wegpunkte.length < 2) return "";
+  const breiten = wegpunkte.map(w => w.breite);
+  const laengen = wegpunkte.map(w => w.laenge);
+  const b0 = Math.min(...breiten), b1 = Math.max(...breiten);
+  const l0 = Math.min(...laengen), l1 = Math.max(...laengen);
+  // Längengrade schrumpfen mit dem Kosinus der Breite - sonst wird das
+  // Gebiet in der Anzeige verzerrt.
+  const kos = Math.cos(((b0 + b1) / 2) * Math.PI / 180);
+  const breiteM = (l1 - l0) * 111320 * kos;
+  const hoeheM = (b1 - b0) * 111320;
+  const seite = 260, rand = 12;
+  const gross = Math.max(breiteM, hoeheM) || 1;
+  const w = rand * 2 + seite * (breiteM / gross);
+  const h = rand * 2 + seite * (hoeheM / gross);
+  const x = (l) => rand + ((l - l0) * 111320 * kos) / gross * seite;
+  const y = (b) => h - rand - ((b - b0) * 111320) / gross * seite;   // Norden oben
+
+  const punkte = wegpunkte.map(p => x(p.laenge).toFixed(1) + "," + y(p.breite).toFixed(1)).join(" ");
+  return '<div class="bahnen"><svg width="' + w.toFixed(0) + '" height="' + h.toFixed(0)
+    + '" viewBox="0 0 ' + w.toFixed(0) + ' ' + h.toFixed(0) + '">'
+    + '<rect x="' + rand + '" y="' + rand + '" width="' + (w-2*rand).toFixed(1)
+    + '" height="' + (h-2*rand).toFixed(1) + '" fill="none" stroke="#2a313c" stroke-width="1"/>'
+    + '<polyline points="' + punkte + '" fill="none" stroke="#4aa8ff" stroke-width="1.4" '
+    + 'stroke-linejoin="round"/>'
+    + '<circle cx="' + x(wegpunkte[0].laenge).toFixed(1) + '" cy="' + y(wegpunkte[0].breite).toFixed(1)
+    + '" r="3.5" fill="#39d67c"/>'
+    + '<text x="' + (w/2).toFixed(0) + '" y="9" fill="#8b95a5" font-size="8" text-anchor="middle">Norden</text>'
+    + '</svg></div>';
+}
+
+function gebietZeigen(plan){
+  const kacheln = [
+    [plan.flaeche_ha + " ha", "Suchgebiet"],
+    [plan.bahnen, "Bahnen"],
+    [plan.bahnabstand_m + " m", "Bahnabstand"],
+    [(plan.strecke_m / 1000).toFixed(1) + " km", "Flugstrecke"],
+    [plan.dauer_min + " min", "Flugdauer"],
+    [plan.akkus, plan.akkus === 1 ? "Akku" : "Akkus"],
+  ];
+  let h = '<div class="werte" style="margin-top:12px">' + kacheln.map(([z, b]) =>
+    '<div class="wert"><div class="z">' + z + '</div><div class="b">' + b + '</div></div>').join("") + '</div>';
+  h += bahnenZeichnen(plan.wegpunkte);
+  if(plan.hoehe_m > plan.hoechste_sinnvolle_hoehe_m){
+    h += '<div class="warnung" style="margin-top:11px">Über '
+       + plan.hoechste_sinnvolle_hoehe_m + ' m wird eine liegende Person zu klein, '
+       + 'um sie sicher vom Bodenrauschen zu trennen. Tiefer fliegen.</div>';
+  }
+  $("#gebiet-ergebnis").innerHTML = h;
+  $("#mission-laden").hidden = false;
+}
+
+async function gebietPlanen(){
+  const zahl = (id) => parseFloat($("#" + id).value);
+  const daten = {
+    a_breite: zahl("a-breite"), a_laenge: zahl("a-laenge"),
+    b_breite: zahl("b-breite"), b_laenge: zahl("b-laenge"),
+    hoehe: zahl("g-hoehe"), tempo: zahl("g-tempo"),
+    flugzeit: zahl("g-flugzeit"), richtung: $("#g-richtung").value,
+  };
+  for(const [name, wert] of Object.entries(daten)){
+    if(name !== "richtung" && !isFinite(wert)){
+      melde("Bitte alle Felder ausfüllen — es fehlt: " + name);
+      return;
+    }
+  }
+  try{
+    const antwort = await fetch("/suchgebiet", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(daten),
+    });
+    const ergebnis = await antwort.json();
+    if(!antwort.ok || ergebnis.fehler){
+      melde(ergebnis.fehler || "Berechnung fehlgeschlagen");
+      return;
+    }
+    gebietZeigen(ergebnis.plan);
+  }catch(e){
+    melde("Keine Verbindung zum Suchkopf");
+  }
+}
 
 /* ---------------- Gamepad ---------------- */
 

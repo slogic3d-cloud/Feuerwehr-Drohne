@@ -128,6 +128,8 @@ ohne zu überlegen.
       Wer müsste zustimmen?
 - [ ] Einen zweiten Mann suchen — ein Gerät, das nur einer bedienen kann, ist
       im Einsatz nicht verfügbar
+- [ ] [checklisten.html](checklisten.html) ausdrucken und durchgehen —
+      Vorflugkontrolle, Suchflug, Notfälle, Nachbereitung
 
 ## A6 — Bestellung vorbereiten
 
@@ -228,7 +230,8 @@ finde ich nachts 9 von 10 Personen, mit im Schnitt 2 Fehlalarmen je Flug."
 # Phase E — Aus dem Bastelprojekt wird ein Einsatzmittel
 
 - [ ] Dem Kommandanten vorführen — mit den Zahlen aus Phase D, nicht mit
-      Versprechen
+      Versprechen. Vorlage: [vorstellung.html](vorstellung.html), die Lücken
+      mit den gemessenen Werten füllen
 - [ ] Über die Kreisbrandinspektion an das Luftamt Nordbayern: Was braucht es
       für Einsatzflüge über A3 hinaus?
 - [ ] Versicherung über den kommunalen Versicherer klären

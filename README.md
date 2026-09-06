@@ -15,6 +15,10 @@ Trefferalarm mit GPS-Koordinate aufs Tablet.**
   und Maßzeichnungen des Kamerahalters
 * **[messprotokoll.html](messprotokoll.html)** — Messprotokoll zum Ausdrucken
   für den Nachtversuch und die späteren Flugversuche (braucht nur einen Browser)
+* **[checklisten.html](checklisten.html)** — Vorflugkontrolle, Suchflug,
+  Notfälle und Nachbereitung, zum Laminieren für den Koffer
+* **[vorstellung.html](vorstellung.html)** — Kurzvorstellung des Projekts zum
+  Vorlegen bei der Wehrführung
 
 > ⚠️ Eigenbauprojekt, kein zugelassenes Einsatzmittel. Wild und Haustiere
 > sehen im Wärmebild aus wie Menschen — **jeder Treffer muss vom Bediener am
@@ -34,7 +38,7 @@ dass sie nur die Person meldet.
 
 ```bash
 python3 suchkopf.py --pruefen     # einmal auswerten, Ergebnis auf der Konsole
-python3 -m unittest discover -s ../tests    # 84 Tests
+python3 -m unittest discover -s ../tests    # 99 Tests
 ```
 
 Es wird **nichts installiert**: reines Python 3 aus der Standardbibliothek.
@@ -58,13 +62,14 @@ anfassen.
 | `sensor/suchkopf.py` | Hauptprogramm, Taktschleife |
 | `sensor/erkennung.py` | Fleckensuche und Bewertung im Wärmebild |
 | `sensor/suchflug.py` | Streifenbreite, Suchhöhe, Georeferenzierung, Suchmuster |
+| `sensor/mission.py` | Suchflug planen und als Missionsdatei für Mission Planner ausgeben |
 | `sensor/stabilisierung.py` | Bildstabilisierung bei Wind, Fleckverfolgung |
 | `sensor/lernen.py` | Lernender Klassifikator aus den Bewertungen am Tablet |
 | `sensor/treffer.py` | Trefferverwaltung, Speicherung als JSON + PGM-Bild |
 | `sensor/web.py` | HTTP-Server und Ereignisstrom zur Bodenstation |
 | `sensor/geraete/` | Treiber Wärmebild und GPS, jeweils mit Simulation |
 | `bodenstation/index.html` | Oberfläche fürs Tablet |
-| `tests/` | 84 Tests, laufen ohne Hardware |
+| `tests/` | 99 Tests, laufen ohne Hardware |
 
 ## Wie erkannt wird
 
